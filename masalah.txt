@@ -1,0 +1,4 @@
+Range tgl barang
+Kategori barang
+harga beli dan harga jual
+Hapus barang di keranjang

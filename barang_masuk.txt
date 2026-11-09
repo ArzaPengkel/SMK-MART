@@ -1,0 +1,4 @@
+Buku Tulis|B001|5
+Buku Tulis|B001|10
+Lem Kertas|B005|15
+Tolak Angin|B005|5

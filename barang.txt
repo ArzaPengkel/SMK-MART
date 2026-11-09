@@ -1,0 +1,9 @@
+B001|Pensil|3000|5|aktif
+B002|Buku|3000|10|aktif
+B003|Telur|3000|15|aktif
+B004|Susu|7000|15|aktif
+B005|Tolak Angin|4000|15|aktif
+B006|Penghapus|2500|15|aktif
+B007|Lem Kertas|4000|15|aktif
+B008|Pulpen|3000|20|aktif
+B009|Penggaris|6000|20|aktif
