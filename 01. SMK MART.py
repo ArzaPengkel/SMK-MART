@@ -915,7 +915,7 @@ def tampilkan_user():
 
 
 # ==========================================
-# PROGRAM MENU AWAL
+# DISPLAY POSISI
 # ==========================================
 posisi = main_menu()
 
