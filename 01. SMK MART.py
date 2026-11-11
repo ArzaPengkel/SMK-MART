@@ -273,7 +273,7 @@ def main_menu():
         print("========================")
         print("1. Login")
         print("2. Keluar")
-        pilihan = input("Pilih menu (1-3): ").strip()
+        pilihan = input("Pilih menu (1-2): ").strip()
 
         if pilihan == "1":
             status = login()
@@ -293,7 +293,6 @@ def main_menu():
 # TAMBAH BARANG
 # ==========================================
 def buat_kode_barang():
-    """Kode berikutnya dihitung dari kode terbesar yang ada, format tetap B001, B002, ..."""
     terbesar = 0
     for barang in data_barang.values():
         try:
@@ -315,7 +314,9 @@ def tambah_barang():
             print("Nama barang tidak boleh kosong.")
             continue
 
-        if nama in data_barang:
+        # Validasi duplikat berdasarkan nama
+        ada_nama = any(b["nama"].lower() == nama for b in data_barang.values())
+        if ada_nama:
             print("Barang sudah ada dalam data.")
             continue
 
@@ -330,7 +331,6 @@ def tambah_barang():
             print("Harga dan stok tidak boleh negatif.")
             continue
 
-        # Data disimpan dulu, baru ditanya mau tambah lagi atau tidak
         data_barang[kode] = {
             "kode": kode,
             "nama": nama.title(),
@@ -356,7 +356,7 @@ def nonaktifkan_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin dinonaktifkan: ").lower().strip()
+    kode = input("\nKode barang yang ingin dinonaktifkan: ").strip()
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -396,7 +396,7 @@ def aktifkan_barang():
     for barang in barang_nonaktif:
         print(f"- {barang['nama']} (Kode: {barang['kode']}) | Stok: {barang['stok']}")
 
-    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali: ").lower().strip()
+    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali: ").strip()
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -420,7 +420,6 @@ def aktifkan_barang():
 # EDIT BARANG
 # ==========================================
 def edit_barang():
-    global data_barang
     print("\n=== EDIT DATA BARANG ===")
     if len(data_barang) == 0:
         print("Data barang masih kosong.")
@@ -447,7 +446,6 @@ def edit_barang():
     if nama_baru == "":
         nama_baru = barang["nama"]
 
-    # Harga
     if harga_baru_str == "":
         harga_baru = barang["harga"]
     else:
@@ -457,7 +455,6 @@ def edit_barang():
             print("Harga harus berupa angka!")
             return
 
-    # Stok
     if stok_baru_str == "":
         stok_baru = barang["stok"]
     else:
@@ -471,25 +468,10 @@ def edit_barang():
         print("Harga dan stok tidak boleh negatif.")
         return
 
-    key_baru = nama_baru.lower()
-    if key_baru != kode and key_baru in data_barang:
-        print("Nama barang tersebut sudah dipakai barang lain.")
-        return
+    barang["nama"] = nama_baru.title()
+    barang["harga"] = harga_baru
+    barang["stok"] = stok_baru
 
-    data_barang_baru = {}
-    for key, val in data_barang.items():
-        if key == kode:
-            data_barang_baru[key_baru] = {
-                "kode": barang["kode"],
-                "nama": nama_baru.title(),
-                "harga": harga_baru,
-                "stok": stok_baru,
-                "status": barang.get("status", "aktif")
-            }
-        else:
-            data_barang_baru[key] = val
-
-    data_barang = data_barang_baru
     simpan_barang()
     print("\nData barang berhasil diedit!")
 
@@ -530,7 +512,7 @@ def tampilkan_barang():
         print("Data masih kosong.")
     else:
         ditemukan = False
-        for nama, barang in data_barang.items():
+        for kode, barang in data_barang.items():
             if barang_aktif(barang):
                 print(
                     barang["nama"],
@@ -543,7 +525,7 @@ def tampilkan_barang():
 
 
 # ==========================================
-# CARI BARANG
+# CARI BARANG BERDASARKAN KODE
 # ==========================================
 def cari_barang():
     print("====================")
@@ -553,14 +535,14 @@ def cari_barang():
         print("Data masih kosong.")
         return
 
-    nama_cari = input("Masukkan nama barang yang dicari: ").lower().strip()
-    if nama_cari == "":
-        print("Kata kunci tidak boleh kosong.")
+    kode_cari = input("Masukkan kode barang yang dicari (cth: B001): ").strip()
+    if kode_cari == "":
+        print("Kode tidak boleh kosong.")
         return
 
     ditemukan = False
-    for nama, barang in data_barang.items():
-        if barang_aktif(barang) and nama_cari in nama.lower():
+    for kode, barang in data_barang.items():
+        if barang_aktif(barang) and kode_cari in kode.lower():
             print(barang["nama"],
                   "(" + barang["kode"] + ") "
                   "- Rp" + str(barang["harga"]) +
@@ -568,14 +550,13 @@ def cari_barang():
             ditemukan = True
 
     if not ditemukan:
-        print("Barang tidak ditemukan")
+        print("Barang dengan kode tersebut tidak ditemukan.")
 
 
 # ==========================================
 # SORTING STOK
 # ==========================================
 def nilai_urut(barang, kunci):
-    """Nilai yang dibandingkan saat sorting. Nama dibandingkan tanpa membedakan huruf besar/kecil."""
     if kunci == "nama":
         return barang["nama"].lower()
     return barang[kunci]
@@ -620,8 +601,8 @@ def sorting_barang():
         return
 
     print("\nArah pengurutan:")
-    print("1.Terkecil/A ke terbesar/Z")
-    print("2.Terbesar/Z ke terkecil/A")
+    print("1. Terkecil/A ke terbesar/Z")
+    print("2. Terbesar/Z ke terkecil/A")
     arah = input("Pilih (1/2): ").strip()
     if arah not in ("1", "2"):
         print("Pilihan tidak tersedia.")
@@ -638,7 +619,7 @@ def sorting_barang():
 
 
 # ==========================================
-# TRANSAKSI PENJUALAN
+# TRANSAKSI PENJUALAN 
 # ==========================================
 def transaksi_penjualan():
     if len(data_barang) == 0:
@@ -652,13 +633,13 @@ def transaksi_penjualan():
         tampilkan_barang()
 
         print("\n--- Tambah Barang ke Keranjang ---")
-        nama = input("Nama barang: ").lower().strip()
+        kode = input("Masukkan Kode barang: ").strip()
 
-        if nama not in data_barang or not barang_aktif(data_barang[nama]):
-            print("Barang tidak ditemukan.")
+        if kode not in data_barang or not barang_aktif(data_barang[kode]):
+            print("Barang tidak ditemukan atau sudah nonaktif.")
         else:
-            barang = data_barang[nama]
-            print(f"Harga: Rp{barang['harga']} | Stok: {barang['stok']}")
+            barang = data_barang[kode]
+            print(f"Barang: {barang['nama']} | Harga: Rp{barang['harga']} | Stok: {barang['stok']}")
             try:
                 jumlah = int(input("Jumlah beli: "))
             except ValueError:
@@ -747,7 +728,7 @@ def transaksi_penjualan():
 
 
 # ==========================================
-# KELOLA STOK
+# KELOLA STOK (DIPERBAIKI)
 # ==========================================
 def kelola_stok():
     print("\n=== KELOLA STOK BARANG ===")
@@ -768,12 +749,12 @@ def kelola_stok():
         print("Barang tidak ditemukan.")
         return
 
-    barang = data_barang["nama"]
+    barang = data_barang[kode]
     if not barang_aktif(barang):
         print("Barang berstatus nonaktif. Aktifkan terlebih dahulu.")
         return
 
-    print ("\nKode :", barang["kode"])
+    print("\nKode   :", barang["kode"])
     print("Barang :", barang["nama"])
     print("Stok sekarang:", barang["stok"])
 
@@ -789,11 +770,6 @@ def kelola_stok():
 
     # ===Barang Masuk===
     if pilihan == "1":
-        kode = input("Kode barang: ").strip()
-        if kode not in data_barang:
-            print("Barang tidak ditemukan.")
-            return
-        
         barang["stok"] += jumlah
         barang_masuk.append({
             "nama": barang["nama"],
@@ -854,7 +830,7 @@ def peringatan_stok():
         print("Batas stok minimum berhasil disimpan ke stok_minimum.txt.")
 
     ditemukan = False
-    for nama, barang in data_barang.items():
+    for kode, barang in data_barang.items():
         if barang_aktif(barang) and barang["stok"] <= stok_minimum:
             print("PERINGATAN:", barang["nama"], "| Stok:", barang["stok"])
             ditemukan = True
@@ -890,7 +866,7 @@ def laporan_gudang():
     if len(data_barang) == 0:
         print("Data barang masih kosong.")
     else:
-        for nama, barang in data_barang.items():
+        for kode, barang in data_barang.items():
             print(barang["nama"], "| Stok:", barang["stok"], "| Status:", barang.get("status", "aktif"))
 
     print("\n=== BARANG MASUK ===")
@@ -916,7 +892,7 @@ def tampilkan_user():
     if len(users) == 0:
         print("Belum ada user.")
         return
-    for id_user,  data in users.items():
+    for id_user, data in users.items():
         print("ID:", id_user, "| Nama:", data["Nama"], "| Posisi:", data["Posisi"])
 
 
@@ -949,7 +925,6 @@ if posisi is not None:
 
             pilihan = input("Pilih menu: ").strip()
 
-        
             if pilihan == "1":
                 kelola_data_barang()
             elif pilihan == "2":
