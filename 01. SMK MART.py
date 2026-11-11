@@ -59,7 +59,7 @@ def muat_barang():
                     harga = int(data[2])
                     stok = int(data[3])
                     status = data[4]
-                    data_barang[nama.lower()] = {
+                    data_barang[kode] = {
                         "kode": kode,
                         "nama": nama,
                         "harga": harga,
@@ -331,7 +331,7 @@ def tambah_barang():
             continue
 
         # Data disimpan dulu, baru ditanya mau tambah lagi atau tidak
-        data_barang[nama] = {
+        data_barang[kode] = {
             "kode": kode,
             "nama": nama.title(),
             "harga": harga,
@@ -356,16 +356,17 @@ def nonaktifkan_barang():
         return
 
     tampilkan_barang()
-    nama = input("\nNama barang yang ingin dinonaktifkan: ").lower().strip()
-    if nama not in data_barang:
+    kode = input("\nKode barang yang ingin dinonaktifkan: ").lower().strip()
+    if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
 
-    barang = data_barang[nama]
+    barang = data_barang[kode]
     if not barang_aktif(barang):
         print("Barang ini sudah berstatus nonaktif.")
         return
 
+    print("Kode :", barang["kode"])
     print("\nBarang :", barang["nama"])
     print("Status :", barang.get("status", "aktif"))
     print("Stok   :", barang["stok"])
@@ -395,14 +396,19 @@ def aktifkan_barang():
     for barang in barang_nonaktif:
         print(f"- {barang['nama']} (Kode: {barang['kode']}) | Stok: {barang['stok']}")
 
-    nama = input("\nMasukkan nama barang yang ingin diaktifkan kembali: ").lower().strip()
-    if nama not in data_barang:
+    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali: ").lower().strip()
+    if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
 
-    barang = data_barang[nama]
+    barang = data_barang[kode]
     if barang_aktif(barang):
         print("Barang ini sudah berstatus aktif.")
+        return
+
+    hapus = input("Yakin ingin Aktifkan barang ini? (ya/tidak): ").lower().strip()
+    if hapus != "ya":
+        print("Pengaktifkan dibatalkan.")
         return
 
     barang["status"] = "aktif"
@@ -421,11 +427,11 @@ def edit_barang():
         return
 
     tampilkan_barang()
-    nama = input("\nNama barang yang ingin diedit: ").lower().strip()
-    if nama not in data_barang:
+    kode = input("\nKode barang yang ingin diedit: ").lower().strip()
+    if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
-    barang = data_barang[nama]
+    barang = data_barang[kode]
 
     print("\nData saat ini:")
     print("Kode  :", barang["kode"])
@@ -466,13 +472,13 @@ def edit_barang():
         return
 
     key_baru = nama_baru.lower()
-    if key_baru != nama and key_baru in data_barang:
+    if key_baru != kode and key_baru in data_barang:
         print("Nama barang tersebut sudah dipakai barang lain.")
         return
 
     data_barang_baru = {}
     for key, val in data_barang.items():
-        if key == nama:
+        if key == kode:
             data_barang_baru[key_baru] = {
                 "kode": barang["kode"],
                 "nama": nama_baru.title(),
@@ -915,10 +921,9 @@ def tampilkan_user():
 
 
 # ==========================================
-# DISPLAY POSISI
+# PROGRAM MENU AWAL
 # ==========================================
 posisi = main_menu()
-
 
 if posisi is not None:
     print("\n======================")
