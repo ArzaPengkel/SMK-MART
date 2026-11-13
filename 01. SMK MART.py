@@ -527,46 +527,51 @@ def tampilkan_barang():
 # CARI BARANG BERDASARKAN KODE
 # ==========================================
 def menu_cari():
-    print("====================")
-    print("    MENU CARI")
-    print("====================")
-    print("1.Berdasarkan kode")
-    print("2.Berdasarkan nama")
-    pilih = input("Pilih Menu: ")
+    while True:
+        print("\n====================")
+        print("    MENU CARI")
+        print("====================")
+        print("1. Berdasarkan kode")
+        print("2. Berdasarkan nama")
+        print("3. Kembali")
+        pilih = input("Pilih Menu (1-3): ").strip()
 
-    if pilih == "1":
-       cari_barang_kode()
-    if pilih == "2":
-       cari_barang_nama()
-    else:
-       print("Pilihan tidak tersedia")
-       return
-
+        if pilih == "1":
+            cari_barang_kode()
+        elif pilih == "2":
+            cari_barang_nama()
+        elif pilih == "3":
+            break
+        else:
+            print("Pilihan tidak tersedia. Silakan pilih 1, 2, atau 3.")
 
 def cari_barang_kode():
     print("====================")
-    print("  PENCARIAN BARANG")
+    print("  PENCARIAN BERDASARKAN KODE")
     print("====================")
     if len(data_barang) == 0:
         print("Data masih kosong.")
         return
 
-    kode_cari = input("Masukkan kode barang yang dicari: ").strip()
+    kode_cari = input("Masukkan kode barang yang dicari: ").strip().lower()
     if kode_cari == "":
         print("Kode tidak boleh kosong.")
         return
 
     ditemukan = False
-    for kode, barang in data_barang["nama"].items():
-        if barang_aktif(barang) and kode_cari in kode:
-            print(barang["nama"],
-                  "(" + barang["kode"] + ") "
-                  "- Rp" + str(barang["harga"]) +
-                  " | Stok:", barang["stok"])
+    for kode, barang in data_barang.items():
+        if barang_aktif(barang) and (kode_cari in kode.lower() or kode_cari in barang["kode"].lower()):
+            print(
+                barang["nama"],
+                "(" + barang["kode"] + ") "
+                "- Rp" + str(barang["harga"]) +
+                " | Stok:", barang["stok"]
+            )
             ditemukan = True
 
     if not ditemukan:
         print("Barang dengan kode tersebut tidak ditemukan.")
+
 
 # ==========================================
 # CARI BARANG BERDASARKAN NAMA
