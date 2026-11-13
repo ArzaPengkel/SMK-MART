@@ -341,8 +341,8 @@ def tambah_barang():
         simpan_barang()
         print("Data berhasil ditambahkan!")
 
-        tambah_lagi = input("\nTambah barang lagi? (ya/tidak): ").lower().strip()
-        if tambah_lagi != "ya":
+        tambah_lagi = input("\nTambah barang lagi? (y/t): ").lower().strip()
+        if tambah_lagi != "y":
             break
 
 
@@ -426,7 +426,7 @@ def edit_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin diedit: ").lower().strip()
+    kode = input("\nKode barang yang ingin diedit: ").strip()
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -515,9 +515,8 @@ def tampilkan_barang():
         for kode, barang in data_barang.items():
             if barang_aktif(barang):
                 print(
-                    barang["nama"],
-                    "(" + barang["kode"] + ") - Rp"
-                    + str(barang["harga"]) + " | Stok:", barang["stok"])
+                    barang["kode"],"\t", barang["nama"],"\t" + "Rp"
+                    + str(barang["harga"]),"\t" + " | Stok:", barang["stok"]),"\t"
                 ditemukan = True
             
         if not ditemukan:
@@ -527,7 +526,24 @@ def tampilkan_barang():
 # ==========================================
 # CARI BARANG BERDASARKAN KODE
 # ==========================================
-def cari_barang():
+def menu_cari():
+    print("====================")
+    print("    MENU CARI")
+    print("====================")
+    print("1.Berdasarkan kode")
+    print("2.Berdasarkan nama")
+    pilih = input("Pilih Menu: ")
+
+    if pilih == "1":
+       cari_barang_kode()
+    if pilih == "2":
+       cari_barang_nama()
+    else:
+       print("Pilihan tidak tersedia")
+       return
+
+
+def cari_barang_kode():
     print("====================")
     print("  PENCARIAN BARANG")
     print("====================")
@@ -535,14 +551,14 @@ def cari_barang():
         print("Data masih kosong.")
         return
 
-    kode_cari = input("Masukkan kode barang yang dicari (cth: B001): ").strip()
+    kode_cari = input("Masukkan kode barang yang dicari: ").strip()
     if kode_cari == "":
         print("Kode tidak boleh kosong.")
         return
 
     ditemukan = False
-    for kode, barang in data_barang.items():
-        if barang_aktif(barang) and kode_cari in kode.lower():
+    for kode, barang in data_barang["nama"].items():
+        if barang_aktif(barang) and kode_cari in kode:
             print(barang["nama"],
                   "(" + barang["kode"] + ") "
                   "- Rp" + str(barang["harga"]) +
@@ -551,6 +567,34 @@ def cari_barang():
 
     if not ditemukan:
         print("Barang dengan kode tersebut tidak ditemukan.")
+
+# ==========================================
+# CARI BARANG BERDASARKAN NAMA
+# ==========================================
+def cari_barang_nama():
+    print("====================")
+    print("  PENCARIAN BARANG")
+    print("====================")
+    if len(data_barang) == 0:
+        print("Data masih kosong.")
+        return
+
+    nama_cari = input("Masukkan nama barang yang dicari: ").lower().strip()
+    if nama_cari == "":
+        print("Nama barang tidak boleh kosong.")
+        return
+
+    ditemukan = False
+    for barang in data_barang.values():
+        if barang_aktif(barang) and nama_cari in barang["nama"].lower():
+            print(barang["nama"],
+                  "(" + barang["kode"] + ") "
+                  "- Rp" + str(barang["harga"]) +
+                  " | Stok:", barang["stok"])
+            ditemukan = True
+
+    if not ditemukan:
+        print("Barang dengan nama tersebut tidak ditemukan.")
 
 
 # ==========================================
@@ -728,7 +772,7 @@ def transaksi_penjualan():
 
 
 # ==========================================
-# KELOLA STOK (DIPERBAIKI)
+# KELOLA STOK 
 # ==========================================
 def kelola_stok():
     print("\n=== KELOLA STOK BARANG ===")
@@ -930,7 +974,7 @@ if posisi is not None:
             elif pilihan == "2":
                 tampilkan_barang()
             elif pilihan == "3":
-                cari_barang()
+                menu_cari()
             elif pilihan == "4":
                 sorting_barang()
             elif pilihan == "5":
@@ -972,7 +1016,7 @@ if posisi is not None:
             if pilihan == "1":
                 tampilkan_barang()
             elif pilihan == "2":
-                cari_barang()
+                menu_cari()
             elif pilihan == "3":
                 transaksi_penjualan()
             elif pilihan == "4":
@@ -1003,7 +1047,7 @@ if posisi is not None:
             if pilihan == "1":
                 tampilkan_barang()
             elif pilihan == "2":
-                cari_barang()
+                menu_cari()
             elif pilihan == "3":
                 kelola_stok()
             elif pilihan == "4":
