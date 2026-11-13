@@ -535,7 +535,6 @@ def menu_cari():
         print("2. Berdasarkan nama")
         print("3. Kembali")
         pilih = input("Pilih Menu (1-3): ").strip()
-
         if pilih == "1":
             cari_barang_kode()
         elif pilih == "2":
@@ -544,7 +543,6 @@ def menu_cari():
             break
         else:
             print("Pilihan tidak tersedia. Silakan pilih 1, 2, atau 3.")
-
 def cari_barang_kode():
     print("====================")
     print("  PENCARIAN BERDASARKAN KODE")
