@@ -1,3 +1,3 @@
-1|Langgeng|2|admin
-2|PENGKEL|3|gudang
-4|Fajrul|kasir
+123456|L|admin123|admin
+279325|Ash|abuhitam|gudang
+349791|Bon|bonnieblue|kasir
