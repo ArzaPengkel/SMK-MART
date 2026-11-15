@@ -218,23 +218,29 @@ def daftar_akun():
 
     id_user = buat_id_user()
 
-    nama_user = bersihkan(input("Nama: "))
-    if nama_user == "":
-        print("Nama User tidak boleh kosong.")
-        return
+    while True:
+        nama_user = bersihkan(input("Nama: "))
+        if nama_user == "":
+            print("Nama User tidak boleh kosong.")
+            continue
+        break
 
-    password = bersihkan(input("Password: "))
-    if len(password) < 8 :
-        print("Password minimal 8 karakter.")
-        return
-    if not any(c.isdigit()for c in password):
-        print("Password harus mengandung minimal 1 angka.")
-        return
+    while True:
+        password = bersihkan(input("Password: "))
+        if len(password) < 8:
+            print("Password minimal 8 karakter.")
+            continue
+        if not any(c.isdigit()for c in password):
+            print("Password harus mengandung minimal 1 angka.")
+            continue
+        break
 
-    posisi = input("Posisi (Admin/Kasir/Gudang): ").lower().strip()
-    if posisi not in ("admin", "kasir", "gudang"):
-        print("Posisi harus Admin, Kasir, atau Gudang.")
-        return
+    while True:
+        posisi = input("Posisi (Admin/Kasir/Gudang): ").lower().strip()
+        if posisi not in ("admin", "kasir", "gudang"):
+            print("Posisi harus Admin, Kasir, atau Gudang.")
+            continue
+        break
 
     users[id_user] = {
         "Nama": nama_user,
@@ -262,15 +268,18 @@ def login():
         login_id = input("ID User: ").strip()
         login_password = input("Password: ").strip()
 
-        if login_id in users and login_password == users[login_id]["Password"]:
+        if login_id == "" or login_password == "":
+            print("ID User dan Password tidak boleh kosong.")
+        elif login_id in users and login_password == users[login_id]["Password"]:
             print("\nLogin berhasil!")
             print("Nama   :", users[login_id]["Nama"])
             print("Posisi :", users[login_id]["Posisi"])
             return users[login_id]["Posisi"]
-
-        print("ID User atau Password salah.")
-        ulang = input("Coba lagi? (ya/tidak): ").lower().strip()
-        if ulang != "ya":
+        else:
+            print("ID User atau Password salah.")
+        
+        ulang = input("Coba lagi? (y/t): ").lower().strip()
+        if ulang != "y":
             return None
 
 
@@ -379,8 +388,8 @@ def nonaktifkan_barang():
     print("Status :", barang.get("status", "aktif"))
     print("Stok   :", barang["stok"])
 
-    hapus = input("Yakin ingin menonaktifkan barang ini? (ya/tidak): ").lower().strip()
-    if hapus != "ya":
+    hapus = input("Yakin ingin menonaktifkan barang ini? (y/t): ").lower().strip()
+    if hapus != "y":
         print("Penonaktifan dibatalkan.")
         return
 
@@ -414,8 +423,8 @@ def aktifkan_barang():
         print("Barang ini sudah berstatus aktif.")
         return
 
-    hapus = input("Yakin ingin Aktifkan barang ini? (ya/tidak): ").lower().strip()
-    if hapus != "ya":
+    hapus = input("Yakin ingin Aktifkan barang ini? (y/t): ").lower().strip()
+    if hapus != "y":
         print("Pengaktifkan dibatalkan.")
         return
 

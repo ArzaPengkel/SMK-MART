@@ -1,3 +1,4 @@
 123456|L|admin123|admin
 279325|Ash|abuhitam|gudang
 349791|Bon|bonnieblue|kasir
+903411|Tester|testing123|admin
