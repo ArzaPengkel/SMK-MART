@@ -985,21 +985,21 @@ if posisi is not None:
                 tampilkan_barang()
             elif pilihan == "3":
                 menu_cari()
-            elif pilihan == "5":
+            elif pilihan == "4":
                 kelola_stok()
-            elif pilihan == "6":
+            elif pilihan == "5":
                 peringatan_stok()
-            elif pilihan == "7":
+            elif pilihan == "6":
                 transaksi_penjualan()
-            elif pilihan == "8":
+            elif pilihan == "7":
                 laporan_penjualan()
-            elif pilihan == "9":
+            elif pilihan == "8":
                 laporan_gudang()
-            elif pilihan == "10":
+            elif pilihan == "9":
                 tampilkan_user()
-            elif pilihan == "11":
+            elif pilihan == "10":
                 daftar_akun()
-            elif pilihan == "12":
+            elif pilihan == "11":
                 simpan_semua_data()
                 posisi = main_menu()
                 if posisi is None:
