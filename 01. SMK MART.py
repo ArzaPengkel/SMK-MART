@@ -2,6 +2,7 @@
 # MENYIMPAN KE FILE .TXT
 # ==========================================
 from datetime import datetime
+import random
 
 
 def bersihkan(teks):
@@ -203,17 +204,19 @@ def barang_aktif(barang):
 # ==========================================
 # DAFTAR AKUN
 # ==========================================
+def buat_id_user():
+    """ID ACAK 6 DIGIT, UNIQUE"""
+    while True:
+        id_baru = str(random.randint(100000, 999999))
+        if id_baru not in users :
+            return id_baru
+
 def daftar_akun():
     print("========================")
     print("      TAMBAHKAN AKUN")
     print("========================")
-    id_user = bersihkan(input("ID User: "))
-    if id_user == "":
-        print("ID User tidak boleh kosong.")
-        return
-    if id_user in users:
-        print("ID User sudah terdaftar.")
-        return
+
+    id_user = buat_id_user()
 
     nama_user = bersihkan(input("Nama: "))
     if nama_user == "":
@@ -221,8 +224,11 @@ def daftar_akun():
         return
 
     password = bersihkan(input("Password: "))
-    if password == "":
-        print("Password tidak boleh kosong.")
+    if len(password) < 8 :
+        print("Password minimal 8 karakter.")
+        return
+    if not any(c.isdigit()for c in password):
+        print("Password harus mengandung minimal 1 angka.")
         return
 
     posisi = input("Posisi (Admin/Kasir/Gudang): ").lower().strip()
@@ -237,6 +243,8 @@ def daftar_akun():
     }
     simpan_users()
     print("\nPendaftaran berhasil!")
+    print("ID USER :", id_user)
+    print("ID USER ini dipakai untuk login")
 
 
 # ==========================================
@@ -269,11 +277,11 @@ def login():
 def main_menu():
     while True:
         print("\n=======================")
-        print("       MENU AWAL ")
+        print("       MENU LOGIN ")
         print("========================")
         print("1. Login")
-        print("2. Keluar")
-        pilihan = input("Pilih menu (1-2): ").strip()
+        print("0. Keluar")
+        pilihan = input("Pilih menu (1-0): ").strip()
 
         if pilihan == "1":
             status = login()
@@ -282,7 +290,7 @@ def main_menu():
             elif status:
                 print("Melanjutkan ke sistem sebagai " + str(status))
                 return status
-        elif pilihan == "2":
+        elif pilihan == "0":
             print("Terima kasih!")
             return None
         else:
@@ -486,7 +494,7 @@ def kelola_data_barang():
         print("2. Nonaktifkan Data Barang")
         print("3. Aktifkan Barang")
         print("4. Edit Data Barang")
-        print("5. Kembali")
+        print("0. Kembali")
         pilihan = input("Pilihan: ").strip()
 
         if pilihan == "1":
@@ -497,7 +505,7 @@ def kelola_data_barang():
             aktifkan_barang()
         elif pilihan == "4":
             edit_barang()
-        elif pilihan == "5":
+        elif pilihan == "0":
             return
         else:
             print("Pilihan tidak tersedia.")
@@ -533,13 +541,13 @@ def menu_cari():
         print("====================")
         print("1. Berdasarkan kode")
         print("2. Berdasarkan nama")
-        print("3. Kembali")
+        print("0. Kembali")
         pilih = input("Pilih Menu (1-3): ").strip()
         if pilih == "1":
             cari_barang_kode()
         elif pilih == "2":
             cari_barang_nama()
-        elif pilih == "3":
+        elif pilih == "0":
             break
         else:
             print("Pilihan tidak tersedia. Silakan pilih 1, 2, atau 3.")
@@ -959,16 +967,15 @@ if posisi is not None:
             print("1. Kelola Data Barang")
             print("2. Tampilkan Data Barang")
             print("3. Cari Data Barang")
-            print("4. Sorting Barang ")
-            print("5. Kelola Stok Barang")
-            print("6. Peringatan Stok Minimum")
-            print("7. Transaksi Penjualan")
-            print("8. Laporan Penjualan")
-            print("9. Laporan Stok dan Aktivitas Gudang")
-            print("10. Tampilkan User")
-            print("11. Daftarkan Akun")
-            print("12. Log Out Akun")
-            print("13. Keluar")
+            print("4. Kelola Stok Barang")
+            print("5. Peringatan Stok Minimum")
+            print("6. Transaksi Penjualan")
+            print("7. Laporan Penjualan")
+            print("8. Laporan Stok dan Aktivitas Gudang")
+            print("9. Tampilkan User")
+            print("10. Daftarkan Akun")
+            print("11. Log Out Akun")
+            print("0. Keluar")
 
             pilihan = input("Pilih menu: ").strip()
 
@@ -978,8 +985,6 @@ if posisi is not None:
                 tampilkan_barang()
             elif pilihan == "3":
                 menu_cari()
-            elif pilihan == "4":
-                sorting_barang()
             elif pilihan == "5":
                 kelola_stok()
             elif pilihan == "6":
@@ -999,7 +1004,7 @@ if posisi is not None:
                 posisi = main_menu()
                 if posisi is None:
                     break
-            elif pilihan == "13":
+            elif pilihan == "0":
                 simpan_semua_data()
                 print("Program Selesai")
                 break
@@ -1012,7 +1017,7 @@ if posisi is not None:
             print("2. Cari Data Barang")
             print("3. Transaksi Penjualan")
             print("4. Log Out Akun")
-            print("5. Keluar")
+            print("0. Keluar")
 
             pilihan = input("Pilih menu: ").strip()
 
@@ -1027,7 +1032,7 @@ if posisi is not None:
                 posisi = main_menu()
                 if posisi is None:
                     break
-            elif pilihan == "5":
+            elif pilihan == "0":
                 simpan_semua_data()
                 print("Program Selesai")
                 break
@@ -1039,11 +1044,10 @@ if posisi is not None:
             print("1. Tampilkan Data Barang")
             print("2. Cari Data Barang")
             print("3. Kelola Stok Barang")
-            print("4. Sorting Barang")
-            print("5. Peringatan Stok Minimum")
-            print("6. Laporan Stok dan Aktivitas Gudang")
-            print("7. Log Out Akun")
-            print("8. Keluar")
+            print("4. Peringatan Stok Minimum")
+            print("5. Laporan Stok dan Aktivitas Gudang")
+            print("6. Log Out Akun")
+            print("0. Keluar")
 
             pilihan = input("Pilih Menu: ").strip()
 
@@ -1054,17 +1058,15 @@ if posisi is not None:
             elif pilihan == "3":
                 kelola_stok()
             elif pilihan == "4":
-                sorting_barang()
-            elif pilihan == "5":
                 peringatan_stok()
-            elif pilihan == "6":
+            elif pilihan == "5":
                 laporan_gudang()
-            elif pilihan == "7":
+            elif pilihan == "6":
                 simpan_semua_data()
                 posisi = main_menu()
                 if posisi is None:
                     break
-            elif pilihan == "8":
+            elif pilihan == "0":
                 simpan_semua_data()
                 print("Program Selesai")
                 break
