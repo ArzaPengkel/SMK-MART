@@ -987,8 +987,11 @@ def tampilkan_user():
     if len(users) == 0:
         print("Belum ada user.")
         return
+
+    i = max([len(k) for k in users] + [2])
+    n = max([len(d["Nama"] for d in users.value()] + [4])
     for id_user, data in users.items():
-        print("ID:", id_user, "| Nama:", data["Nama"], "| Posisi:", data["Posisi"])
+        print(f"{id_user:<{i}} | {data['Nama']:<{n}} | {data['Posisi']}")
 
 
 # ==========================================
