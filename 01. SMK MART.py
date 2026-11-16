@@ -256,6 +256,8 @@ def daftar_akun():
 # ==========================================
 # LOGIN
 # ==========================================
+import getpass
+
 def login():
     print("\n========================")
     print("         LOGIN")
@@ -266,7 +268,7 @@ def login():
 
     while True:
         login_id = input("ID User: ").strip()
-        login_password = input("Password: ").strip()
+        login_password = getpass.getpass("Password: ").strip()
 
         if login_id == "" or login_password == "":
             print("ID User dan Password tidak boleh kosong.")
@@ -914,9 +916,9 @@ def laporan_penjualan():
 
     try:
         tanggal_awal = datetime.strptime(
-            input("Tanggal awal (YYYY-MM-DD): ".strip(), "%Y-%m-%d
-                 ).date()
-            tanggal_akhir = datetime.strptime(
+            input("Tanggal awal (YYYY-MM-DD): ").strip(), "%Y-%m-%d"
+            ).date()
+        tanggal_akhir = datetime.strptime(
             input("Tanggal akhir (YYYY-MM-DD): ").strip(), "%Y-%m-%d"
         ).date()
     except ValueError:
@@ -989,7 +991,7 @@ def tampilkan_user():
         return
 
     i = max([len(k) for k in users] + [2])
-    n = max([len(d["Nama"] for d in users.value()] + [4])
+    n = max([len(d["Nama"]) for d in users.values()] + [4])
     for id_user, data in users.items():
         print(f"{id_user:<{i}} | {data['Nama']:<{n}} | {data['Posisi']}")
 
