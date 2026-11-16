@@ -907,10 +907,41 @@ def peringatan_stok():
 # LAPORAN PENJUALAN
 # ==========================================
 def laporan_penjualan():
-    print("\n=== LAPORAN PENJUALAN ===")
+    print("\n=== LAPORAN PENJUALAN BEDASARKAN RANGE TANGGAL ===")
     if len(transaksi) == 0:
         print("Belum ada transaksi.")
         return
+
+    try:
+        tanggal_awal = datetime.strptime(
+            input("Tanggal awal (YYYY-MM-DD): ".strip(), "%Y-%m-%d
+                 ).date()
+            tanggal_akhir = datetime.strptime(
+            input("Tanggal akhir (YYYY-MM-DD): ").strip(), "%Y-%m-%d"
+        ).date()
+    except ValueError:
+        print("Format tanggal salah. Gunakan YYYY-MM-DD.")
+        return
+
+    if tanggal_awal > tanggal_akhir:
+        print("Tanggal awal tidak boleh melewati tanggal akhir.")
+        return
+
+    data_filter = []
+    for data in transaksi:
+        try:
+            tanggal_transaksi = datetime.strptime(
+                data["waktu"], "%Y-%m-%d %H:%M:%S"
+            ).date()
+        except ValueError:
+            continue
+        if tanggal_awal <= tanggal_transaksi <= tanggal_akhir:
+            data_filter.append(data)
+
+    if not data_filter:
+        print("Tidak ada transaksi pada rentang tanggal tersebut.")
+        return
+
 
     total_penjualan = 0
     for data in transaksi:
