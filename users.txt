@@ -1,3 +1,3 @@
-123456|L|admin123|admin
+123456|Langgeng|admin123|admin
 279325|Ash|abuhitam|gudang
 349791|Bon|bonnieblue|kasir
