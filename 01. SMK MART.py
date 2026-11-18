@@ -1,17 +1,60 @@
 # ==========================================
-# MENYIMPAN KE FILE .TXT
+# SMK MART - SISTEM MANAJEMEN BARANG
 # ==========================================
 from datetime import datetime
+import getpass
 import random
 
 
+# ==========================================
+# FUNGSI BANTU TAMPILAN
+# ==========================================
 def bersihkan(teks):
     """Karakter '|' dipakai sebagai pemisah di file .txt, jadi diganti agar file tidak rusak."""
     return teks.replace("|", "/").strip()
 
 
+def rupiah(angka):
+    """Format angka: 15000 -> Rp15.000"""
+    return "Rp" + f"{angka:,}".replace(",", ".")
+
+
+def cetak_tabel_barang(daftar, tampil_status=False):
+    """Mencetak daftar barang dalam tabel berbingkai (lebar kolom menyesuaikan isi)."""
+    if not daftar:
+        return
+
+    # Setiap kolom: (judul, rata, daftar nilai)
+    kolom = [
+        ("No", ">", [str(i) for i in range(1, len(daftar) + 1)]),
+        ("Kode", "<", [b["kode"] for b in daftar]),
+        ("Nama Barang", "<", [b["nama"] for b in daftar]),
+        ("Harga", ">", [rupiah(b["harga"]) for b in daftar]),
+        ("Stok", ">", [str(b["stok"]) for b in daftar]),
+    ]
+    if tampil_status:
+        kolom.append(("Status", "<", [b.get("status", "aktif") for b in daftar]))
+
+    lebar = [max(len(judul), *(len(v) for v in nilai)) for judul, _, nilai in kolom]
+
+    garis = "+" + "+".join("-" * (w + 2) for w in lebar) + "+"
+    header = "|" + "|".join(f" {judul:^{w}} " for (judul, _, _), w in zip(kolom, lebar)) + "|"
+
+    print(garis)
+    print(header)
+    print(garis)
+    for i in range(len(daftar)):
+        sel = [f" {nilai[i]:{rata}{w}} " for (_, rata, nilai), w in zip(kolom, lebar)]
+        print("|" + "|".join(sel) + "|")
+    print(garis)
+    print(f"Total: {len(daftar)} barang")
+
+
+# ==========================================
+# MENYIMPAN KE FILE .TXT
+# ==========================================
 def simpan_users():
-    with open("users.txt", "w") as file:
+    with open("users.txt", "w", encoding="utf-8") as file:
         for id_user, data in users.items():
             file.write(
                 id_user + "|" +
@@ -23,7 +66,7 @@ def simpan_users():
 
 def muat_users():
     try:
-        with open("users.txt", "r") as file:
+        with open("users.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
                 if len(data) == 4:
@@ -38,7 +81,7 @@ def muat_users():
 
 
 def simpan_barang():
-    with open("barang.txt", "w") as file:
+    with open("barang.txt", "w", encoding="utf-8") as file:
         for barang in data_barang.values():
             file.write(
                 barang["kode"] + "|" +
@@ -51,28 +94,27 @@ def simpan_barang():
 
 def muat_barang():
     try:
-        with open("barang.txt", "r") as file:
+        with open("barang.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
                 if len(data) == 5:
-                    kode = data[0]
-                    nama = data[1]
-                    harga = int(data[2])
-                    stok = int(data[3])
-                    status = data[4]
-                    data_barang[kode] = {
-                        "kode": kode,
-                        "nama": nama,
-                        "harga": harga,
-                        "stok": stok,
-                        "status": status,
-                    }
+                    try:
+                        kode = data[0]
+                        data_barang[kode] = {
+                            "kode": kode,
+                            "nama": data[1],
+                            "harga": int(data[2]),
+                            "stok": int(data[3]),
+                            "status": data[4],
+                        }
+                    except ValueError:
+                        pass  # lewati baris yang rusak
     except FileNotFoundError:
         pass
 
 
 def simpan_transaksi():
-    with open("transaksi.txt", "w") as file:
+    with open("transaksi.txt", "w", encoding="utf-8") as file:
         for data in transaksi:
             file.write(
                 data["waktu"] + "|" +
@@ -85,23 +127,26 @@ def simpan_transaksi():
 
 def muat_transaksi():
     try:
-        with open("transaksi.txt", "r") as file:
+        with open("transaksi.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
                 if len(data) == 5:
-                    transaksi.append({
-                        "waktu": data[0],
-                        "nama": data[1],
-                        "kode": data[2],
-                        "jumlah": int(data[3]),
-                        "total": int(data[4])
-                    })
+                    try:
+                        transaksi.append({
+                            "waktu": data[0],
+                            "nama": data[1],
+                            "kode": data[2],
+                            "jumlah": int(data[3]),
+                            "total": int(data[4])
+                        })
+                    except ValueError:
+                        pass
     except FileNotFoundError:
         pass
 
 
 def simpan_barang_masuk():
-    with open("barang_masuk.txt", "w") as file:
+    with open("barang_masuk.txt", "w", encoding="utf-8") as file:
         for data in barang_masuk:
             file.write(
                 data["nama"] + "|" +
@@ -112,21 +157,24 @@ def simpan_barang_masuk():
 
 def muat_barang_masuk():
     try:
-        with open("barang_masuk.txt", "r") as file:
+        with open("barang_masuk.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
                 if len(data) == 3:
-                    barang_masuk.append({
-                        "nama": data[0],
-                        "kode": data[1],
-                        "jumlah": int(data[2])
-                    })
+                    try:
+                        barang_masuk.append({
+                            "nama": data[0],
+                            "kode": data[1],
+                            "jumlah": int(data[2])
+                        })
+                    except ValueError:
+                        pass
     except FileNotFoundError:
         pass
 
 
 def simpan_barang_keluar():
-    with open("barang_keluar.txt", "w") as file:
+    with open("barang_keluar.txt", "w", encoding="utf-8") as file:
         for data in barang_keluar:
             file.write(
                 data["nama"] + "|" +
@@ -138,16 +186,19 @@ def simpan_barang_keluar():
 
 def muat_barang_keluar():
     try:
-        with open("barang_keluar.txt", "r") as file:
+        with open("barang_keluar.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
                 if len(data) == 4:
-                    barang_keluar.append({
-                        "nama": data[0],
-                        "kode": data[1],
-                        "jumlah": int(data[2]),
-                        "alasan": data[3]
-                    })
+                    try:
+                        barang_keluar.append({
+                            "nama": data[0],
+                            "kode": data[1],
+                            "jumlah": int(data[2]),
+                            "alasan": data[3]
+                        })
+                    except ValueError:
+                        pass
     except FileNotFoundError:
         pass
 
@@ -208,10 +259,11 @@ def buat_id_user():
     """ID ACAK 6 DIGIT, UNIQUE"""
     while True:
         id_baru = str(random.randint(100000, 999999))
-        if id_baru not in users :
+        if id_baru not in users:
             return id_baru
 
-def daftar_akun():
+
+def daftar_akun(posisi_tetap=None):
     print("========================")
     print("      TAMBAHKAN AKUN")
     print("========================")
@@ -230,17 +282,21 @@ def daftar_akun():
         if len(password) < 8:
             print("Password minimal 8 karakter.")
             continue
-        if not any(c.isdigit()for c in password):
+        if not any(c.isdigit() for c in password):
             print("Password harus mengandung minimal 1 angka.")
             continue
         break
 
-    while True:
-        posisi = input("Posisi (Admin/Kasir/Gudang): ").lower().strip()
-        if posisi not in ("admin", "kasir", "gudang"):
-            print("Posisi harus Admin, Kasir, atau Gudang.")
-            continue
-        break
+    if posisi_tetap:
+        posisi = posisi_tetap
+        print("Posisi: " + posisi + " (akun pertama otomatis menjadi Admin)")
+    else:
+        while True:
+            posisi = input("Posisi (Admin/Kasir/Gudang): ").lower().strip()
+            if posisi not in ("admin", "kasir", "gudang"):
+                print("Posisi harus Admin, Kasir, atau Gudang.")
+                continue
+            break
 
     users[id_user] = {
         "Nama": nama_user,
@@ -256,14 +312,11 @@ def daftar_akun():
 # ==========================================
 # LOGIN
 # ==========================================
-import getpass
-
 def login():
     print("\n========================")
     print("         LOGIN")
     print("========================")
     if len(users) == 0:
-        print("Belum ada akun terdaftar. Silakan daftar akun terlebih dahulu.")
         return "KOSONG"
 
     while True:
@@ -276,10 +329,10 @@ def login():
             print("\nLogin berhasil!")
             print("Nama   :", users[login_id]["Nama"])
             print("Posisi :", users[login_id]["Posisi"])
-            return users[login_id]["Posisi"]
+            return users[login_id]["Posisi"].lower()
         else:
             print("ID User atau Password salah.")
-        
+
         ulang = input("Coba lagi? (y/t): ").lower().strip()
         if ulang != "y":
             return None
@@ -287,16 +340,19 @@ def login():
 
 def main_menu():
     while True:
-        print("\n=======================")
-        print("       MENU LOGIN ")
+        print("\n========================")
+        print("       MENU LOGIN")
         print("========================")
         print("1. Login")
         print("0. Keluar")
-        pilihan = input("Pilih menu (1-0): ").strip()
+        pilihan = input("Pilih menu (0-1): ").strip()
 
         if pilihan == "1":
             status = login()
             if status == "KOSONG":
+                # Belum ada akun sama sekali -> buat akun Admin pertama
+                print("Belum ada akun terdaftar. Buat akun Admin pertama.\n")
+                daftar_akun(posisi_tetap="admin")
                 continue
             elif status:
                 print("Melanjutkan ke sistem sebagai " + str(status))
@@ -328,14 +384,15 @@ def tambah_barang():
         kode = buat_kode_barang()
         print(f"Kode Barang: {kode}")
 
-        nama = bersihkan(input("Nama Barang : ")).lower()
+        nama = bersihkan(input("Nama Barang (0 untuk kembali): ")).lower()
+        if nama == "0":
+            return
         if nama == "":
             print("Nama barang tidak boleh kosong.")
             continue
 
         # Validasi duplikat berdasarkan nama
-        ada_nama = any(b["nama"].lower() == nama for b in data_barang.values())
-        if ada_nama:
+        if any(b["nama"].lower() == nama for b in data_barang.values()):
             print("Barang sudah ada dalam data.")
             continue
 
@@ -375,7 +432,9 @@ def nonaktifkan_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin dinonaktifkan: ").strip()
+    kode = input("\nKode barang yang ingin dinonaktifkan (0 untuk kembali): ").strip().upper()
+    if kode == "0":
+        return
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -385,13 +444,13 @@ def nonaktifkan_barang():
         print("Barang ini sudah berstatus nonaktif.")
         return
 
-    print("Kode :", barang["kode"])
-    print("\nBarang :", barang["nama"])
+    print("\nKode   :", barang["kode"])
+    print("Barang :", barang["nama"])
     print("Status :", barang.get("status", "aktif"))
     print("Stok   :", barang["stok"])
 
-    hapus = input("Yakin ingin menonaktifkan barang ini? (y/t): ").lower().strip()
-    if hapus != "y":
+    konfirmasi = input("Yakin ingin menonaktifkan barang ini? (y/t): ").lower().strip()
+    if konfirmasi != "y":
         print("Penonaktifan dibatalkan.")
         return
 
@@ -412,10 +471,11 @@ def aktifkan_barang():
         return
 
     print("\nDaftar Barang Nonaktif:")
-    for barang in barang_nonaktif:
-        print(f"- {barang['nama']} (Kode: {barang['kode']}) | Stok: {barang['stok']}")
+    cetak_tabel_barang(sorted(barang_nonaktif, key=lambda b: b["kode"]))
 
-    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali: ").strip()
+    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali (0 untuk kembali): ").strip().upper()
+    if kode == "0":
+        return
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -425,9 +485,9 @@ def aktifkan_barang():
         print("Barang ini sudah berstatus aktif.")
         return
 
-    hapus = input("Yakin ingin Aktifkan barang ini? (y/t): ").lower().strip()
-    if hapus != "y":
-        print("Pengaktifkan dibatalkan.")
+    konfirmasi = input("Yakin ingin mengaktifkan barang ini? (y/t): ").lower().strip()
+    if konfirmasi != "y":
+        print("Pengaktifan dibatalkan.")
         return
 
     barang["status"] = "aktif"
@@ -445,7 +505,9 @@ def edit_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin diedit: ").strip()
+    kode = input("\nKode barang yang ingin diedit (0 untuk kembali): ").strip().upper()
+    if kode == "0":
+        return
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -454,7 +516,7 @@ def edit_barang():
     print("\nData saat ini:")
     print("Kode  :", barang["kode"])
     print("Nama  :", barang["nama"])
-    print("Harga :", barang["harga"])
+    print("Harga :", rupiah(barang["harga"]))
     print("Stok  :", barang["stok"])
 
     print("\nMasukkan data baru (kosongkan jika tidak ingin diubah).")
@@ -464,6 +526,10 @@ def edit_barang():
 
     if nama_baru == "":
         nama_baru = barang["nama"]
+    elif any(b["nama"].lower() == nama_baru.lower() and b["kode"] != kode
+             for b in data_barang.values()):
+        print("Nama barang sudah dipakai barang lain.")
+        return
 
     if harga_baru_str == "":
         harga_baru = barang["harga"]
@@ -517,7 +583,7 @@ def kelola_data_barang():
         elif pilihan == "4":
             edit_barang()
         elif pilihan == "0":
-            return
+            break
         else:
             print("Pilihan tidak tersedia.")
 
@@ -527,23 +593,16 @@ def kelola_data_barang():
 # ==========================================
 def tampilkan_barang():
     print("\n=== DATA BARANG ===")
-    if len(data_barang) == 0:
-        print("Data masih kosong.")
-    else:
-        ditemukan = False
-        for kode, barang in data_barang.items():
-            if barang_aktif(barang):
-                print(
-                    barang["kode"],"\t", barang["nama"],"\t" + "Rp"
-                    + str(barang["harga"]),"\t" + " | Stok:", barang["stok"]),"\t"
-                ditemukan = True
-            
-        if not ditemukan:
-            print("Tidak ada data barang yang aktif.")
+    daftar = sorted((b for b in data_barang.values() if barang_aktif(b)),
+                    key=lambda b: b["kode"])
+    if not daftar:
+        print("Tidak ada data barang yang aktif.")
+        return
+    cetak_tabel_barang(daftar)
 
 
 # ==========================================
-# CARI BARANG BERDASARKAN KODE
+# CARI BARANG
 # ==========================================
 def menu_cari():
     while True:
@@ -553,7 +612,7 @@ def menu_cari():
         print("1. Berdasarkan kode")
         print("2. Berdasarkan nama")
         print("0. Kembali")
-        pilih = input("Pilih Menu (1-3): ").strip()
+        pilih = input("Pilih Menu (0-2): ").strip()
         if pilih == "1":
             cari_barang_kode()
         elif pilih == "2":
@@ -561,7 +620,9 @@ def menu_cari():
         elif pilih == "0":
             break
         else:
-            print("Pilihan tidak tersedia. Silakan pilih 1, 2, atau 3.")
+            print("Pilihan tidak tersedia. Silakan pilih 0, 1, atau 2.")
+
+
 def cari_barang_kode():
     print("====================")
     print("  PENCARIAN BERDASARKAN KODE")
@@ -575,24 +636,15 @@ def cari_barang_kode():
         print("Kode tidak boleh kosong.")
         return
 
-    ditemukan = False
-    for kode, barang in data_barang.items():
-        if barang_aktif(barang) and (kode_cari in kode.lower() or kode_cari in barang["kode"].lower()):
-            print(
-                barang["nama"],
-                "(" + barang["kode"] + ") "
-                "- Rp" + str(barang["harga"]) +
-                " | Stok:", barang["stok"]
-            )
-            ditemukan = True
+    hasil = [b for b in data_barang.values()
+             if barang_aktif(b) and kode_cari in b["kode"].lower()]
 
-    if not ditemukan:
+    if hasil:
+        cetak_tabel_barang(sorted(hasil, key=lambda b: b["kode"]))
+    else:
         print("Barang dengan kode tersebut tidak ditemukan.")
 
 
-# ==========================================
-# CARI BARANG BERDASARKAN NAMA
-# ==========================================
 def cari_barang_nama():
     print("====================")
     print("  PENCARIAN BARANG")
@@ -606,26 +658,23 @@ def cari_barang_nama():
         print("Nama barang tidak boleh kosong.")
         return
 
-    ditemukan = False
-    for barang in data_barang.values():
-        if barang_aktif(barang) and nama_cari in barang["nama"].lower():
-            print(barang["nama"],
-                  "(" + barang["kode"] + ") "
-                  "- Rp" + str(barang["harga"]) +
-                  " | Stok:", barang["stok"])
-            ditemukan = True
+    hasil = [b for b in data_barang.values()
+             if barang_aktif(b) and nama_cari in b["nama"].lower()]
 
-    if not ditemukan:
+    if hasil:
+        cetak_tabel_barang(sorted(hasil, key=lambda b: b["kode"]))
+    else:
         print("Barang dengan nama tersebut tidak ditemukan.")
 
 
 # ==========================================
-# SORTING STOK
+# SORTING BARANG
 # ==========================================
 def nilai_urut(barang, kunci):
     if kunci == "nama":
         return barang["nama"].lower()
     return barang[kunci]
+
 
 def quick_sort(data, kunci="stok"):
     if len(data) <= 1:
@@ -680,16 +729,15 @@ def sorting_barang():
 
     arah_teks = "NAIK" if arah == "1" else "TURUN"
     print(f"\n=== DATA BARANG SETELAH SORTING (BERDASARKAN {judul}, {arah_teks}) ===")
-    for barang in hasil:
-        print(barang["kode"], barang["nama"], "Rp" + str(barang["harga"]), "Stok:", barang["stok"])
+    cetak_tabel_barang(hasil)
 
 
 # ==========================================
-# TRANSAKSI PENJUALAN 
+# TRANSAKSI PENJUALAN
 # ==========================================
 def transaksi_penjualan():
-    if len(data_barang) == 0:
-        print("Data barang masih kosong")
+    if not any(barang_aktif(b) for b in data_barang.values()):
+        print("Tidak ada barang aktif untuk dijual.")
         return
 
     keranjang = []
@@ -699,13 +747,13 @@ def transaksi_penjualan():
         tampilkan_barang()
 
         print("\n--- Tambah Barang ke Keranjang ---")
-        kode = input("Masukkan Kode barang: ").strip()
+        kode = input("Masukkan Kode barang: ").strip().upper()
 
         if kode not in data_barang or not barang_aktif(data_barang[kode]):
             print("Barang tidak ditemukan atau sudah nonaktif.")
         else:
             barang = data_barang[kode]
-            print(f"Barang: {barang['nama']} | Harga: Rp{barang['harga']} | Stok: {barang['stok']}")
+            print(f"Barang: {barang['nama']} | Harga: {rupiah(barang['harga'])} | Stok: {barang['stok']}")
             try:
                 jumlah = int(input("Jumlah beli: "))
             except ValueError:
@@ -731,8 +779,8 @@ def transaksi_penjualan():
                 total_belanja += subtotal
                 print(f"-> {barang['nama']} (x{jumlah}) berhasil ditambahkan ke keranjang.")
 
-        tambah_lagi = input("\nTambah barang lain? (ya/tidak): ").lower().strip()
-        if tambah_lagi != "ya":
+        tambah_lagi = input("\nTambah barang lain? (y/t): ").lower().strip()
+        if tambah_lagi != "y":
             break
 
     if not keranjang:
@@ -743,9 +791,9 @@ def transaksi_penjualan():
     print("     RINGKASAN BELANJA")
     print("============================")
     for item in keranjang:
-        print(f"{item['nama']} x{item['jumlah']} = Rp{item['subtotal']}")
+        print(f"{item['nama']} x{item['jumlah']} = {rupiah(item['subtotal'])}")
     print("----------------------------")
-    print(f"Total Bayar  : Rp{total_belanja}")
+    print(f"Total Bayar  : {rupiah(total_belanja)}")
 
     while True:
         try:
@@ -785,16 +833,16 @@ def transaksi_penjualan():
     print("============================")
     print(f"Waktu : {waktu_sekarang}")
     for item in keranjang:
-        print(f"{item['nama']} x{item['jumlah']} = Rp{item['subtotal']}")
-    print("------------------------------")
-    print(f"Total Harga : Rp{total_belanja}")
-    print(f"Bayar       : Rp{bayar}")
-    print(f"Kembalian   : Rp{kembalian}")
-    print("==============================")
+        print(f"{item['nama']} x{item['jumlah']} = {rupiah(item['subtotal'])}")
+    print("----------------------------")
+    print(f"Total Harga : {rupiah(total_belanja)}")
+    print(f"Bayar       : {rupiah(bayar)}")
+    print(f"Kembalian   : {rupiah(kembalian)}")
+    print("============================")
 
 
 # ==========================================
-# KELOLA STOK 
+# KELOLA STOK
 # ==========================================
 def kelola_stok():
     print("\n=== KELOLA STOK BARANG ===")
@@ -804,13 +852,17 @@ def kelola_stok():
 
     print("1. Barang Masuk")
     print("2. Barang Keluar")
-    pilihan = input("Pilih (1/2): ").strip()
+    print("0. Kembali")
+    pilihan = input("Pilih (1/2/0): ").strip()
 
+    if pilihan == "0":
+        return
     if pilihan not in ("1", "2"):
         print("Pilihan tidak tersedia.")
         return
 
-    kode = input("Kode barang: ").strip()
+    tampilkan_barang()
+    kode = input("\nKode barang: ").strip().upper()
     if kode not in data_barang:
         print("Barang tidak ditemukan.")
         return
@@ -834,7 +886,7 @@ def kelola_stok():
         print("Jumlah tidak valid.")
         return
 
-    # ===Barang Masuk===
+    # === Barang Masuk ===
     if pilihan == "1":
         barang["stok"] += jumlah
         barang_masuk.append({
@@ -846,13 +898,15 @@ def kelola_stok():
         simpan_barang_masuk()
         print("Barang masuk berhasil dicatat.")
 
-    # ===Barang Keluar===
+    # === Barang Keluar ===
     elif pilihan == "2":
         if jumlah > barang["stok"]:
             print("Stok tidak mencukupi.")
             return
 
         alasan = bersihkan(input("Alasan barang keluar: "))
+        if alasan == "":
+            alasan = "-"
         barang["stok"] -= jumlah
         barang_keluar.append({
             "nama": barang["nama"],
@@ -879,9 +933,9 @@ def peringatan_stok():
         return
 
     print("Batas stok minimum saat ini:", stok_minimum)
-    ubah = input("Ubah batas stok minimum? (ya/tidak): ").lower().strip()
+    ubah = input("Ubah batas stok minimum? (y/t): ").lower().strip()
 
-    if ubah == "ya":
+    if ubah == "y":
         try:
             batas_baru = int(input("Masukkan batas stok minimum baru: "))
             if batas_baru < 0:
@@ -895,13 +949,13 @@ def peringatan_stok():
         simpan_stok_minimum()
         print("Batas stok minimum berhasil disimpan ke stok_minimum.txt.")
 
-    ditemukan = False
-    for kode, barang in data_barang.items():
-        if barang_aktif(barang) and barang["stok"] <= stok_minimum:
-            print("PERINGATAN:", barang["nama"], "| Stok:", barang["stok"])
-            ditemukan = True
+    menipis = [b for b in data_barang.values()
+               if barang_aktif(b) and b["stok"] <= stok_minimum]
 
-    if not ditemukan:
+    if menipis:
+        print(f"\nBarang dengan stok <= {stok_minimum}:")
+        cetak_tabel_barang(sorted(menipis, key=lambda b: b["stok"]))
+    else:
         print("Tidak ada barang yang mencapai batas stok minimum.")
 
 
@@ -909,7 +963,7 @@ def peringatan_stok():
 # LAPORAN PENJUALAN
 # ==========================================
 def laporan_penjualan():
-    print("\n=== LAPORAN PENJUALAN BEDASARKAN RANGE TANGGAL ===")
+    print("\n=== LAPORAN PENJUALAN BERDASARKAN RANGE TANGGAL ===")
     if len(transaksi) == 0:
         print("Belum ada transaksi.")
         return
@@ -917,7 +971,7 @@ def laporan_penjualan():
     try:
         tanggal_awal = datetime.strptime(
             input("Tanggal awal (YYYY-MM-DD): ").strip(), "%Y-%m-%d"
-            ).date()
+        ).date()
         tanggal_akhir = datetime.strptime(
             input("Tanggal akhir (YYYY-MM-DD): ").strip(), "%Y-%m-%d"
         ).date()
@@ -944,15 +998,25 @@ def laporan_penjualan():
         print("Tidak ada transaksi pada rentang tanggal tersebut.")
         return
 
+    lebar_nama = max(len("Barang"), max(len(d["nama"]) for d in data_filter))
+    lebar_total = max(len("Total"), max(len(rupiah(d["total"])) for d in data_filter))
+    header = (f"{'Waktu':<19} | {'Kode':<6} | {'Barang':<{lebar_nama}} | "
+              f"{'Jml':>4} | {'Total':>{lebar_total}}")
+    garis = "-" * len(header)
+
+    print(f"\nPeriode: {tanggal_awal} s/d {tanggal_akhir}")
+    print(garis)
+    print(header)
+    print(garis)
 
     total_penjualan = 0
-    for data in transaksi:
-        print("[" + data["waktu"] + "]", "Barang:", data["nama"], "| Kode:", data["kode"],
-              "| Jumlah:", data["jumlah"], "| Total: Rp" + str(data["total"]))
+    for data in data_filter:
+        print(f"{data['waktu']:<19} | {data['kode']:<6} | {data['nama']:<{lebar_nama}} | "
+              f"{data['jumlah']:>4} | {rupiah(data['total']):>{lebar_total}}")
         total_penjualan += data["total"]
 
-    print("-----------------------------")
-    print("Total penjualan: Rp" + str(total_penjualan))
+    print(garis)
+    print(f"Total penjualan: {rupiah(total_penjualan)}")
 
 
 # ==========================================
@@ -963,37 +1027,45 @@ def laporan_gudang():
     if len(data_barang) == 0:
         print("Data barang masih kosong.")
     else:
-        for kode, barang in data_barang.items():
-            print(barang["nama"], "| Stok:", barang["stok"], "| Status:", barang.get("status", "aktif"))
+        cetak_tabel_barang(sorted(data_barang.values(), key=lambda b: b["kode"]),
+                           tampil_status=True)
 
     print("\n=== BARANG MASUK ===")
     if len(barang_masuk) == 0:
         print("Belum ada barang masuk.")
     else:
+        lebar = max(len(d["nama"]) for d in barang_masuk)
         for data in barang_masuk:
-            print(data["nama"], "| Kode:", data["kode"], "| Jumlah:", data["jumlah"])
+            print(f"{data['kode']:<6} | {data['nama']:<{lebar}} | Jumlah: {data['jumlah']}")
 
     print("\n=== BARANG KELUAR ===")
     if len(barang_keluar) == 0:
         print("Belum ada barang keluar.")
     else:
+        lebar = max(len(d["nama"]) for d in barang_keluar)
         for data in barang_keluar:
-            print(data["nama"],
-                  "| Kode:", data["kode"],
-                  "| Jumlah:", data["jumlah"],
-                  "| Alasan:", data["alasan"])
+            print(f"{data['kode']:<6} | {data['nama']:<{lebar}} | "
+                  f"Jumlah: {data['jumlah']:<5} | Alasan: {data['alasan']}")
 
 
+# ==========================================
+# TAMPILKAN USER
+# ==========================================
 def tampilkan_user():
     print("\n=== DAFTAR USER ===")
     if len(users) == 0:
         print("Belum ada user.")
         return
 
-    i = max([len(k) for k in users] + [2])
-    n = max([len(d["Nama"]) for d in users.values()] + [4])
+    i = max([len(k) for k in users] + [len("ID User")])
+    n = max([len(d["Nama"]) for d in users.values()] + [len("Nama")])
+    header = f"{'ID User':<{i}} | {'Nama':<{n}} | Posisi"
+    print("-" * len(header))
+    print(header)
+    print("-" * len(header))
     for id_user, data in users.items():
         print(f"{id_user:<{i}} | {data['Nama']:<{n}} | {data['Posisi']}")
+    print("-" * len(header))
 
 
 # ==========================================
@@ -1002,7 +1074,7 @@ def tampilkan_user():
 posisi = main_menu()
 
 if posisi is not None:
-    print("\n======================")
+    print("\n========================")
     print("        SMK MART")
     print("========================")
 
@@ -1019,7 +1091,8 @@ if posisi is not None:
             print("8. Laporan Stok dan Aktivitas Gudang")
             print("9. Tampilkan User")
             print("10. Daftarkan Akun")
-            print("11. Log Out Akun")
+            print("11. Urutkan Data Barang")
+            print("12. Log Out Akun")
             print("0. Keluar")
 
             pilihan = input("Pilih menu: ").strip()
@@ -1045,6 +1118,8 @@ if posisi is not None:
             elif pilihan == "10":
                 daftar_akun()
             elif pilihan == "11":
+                sorting_barang()
+            elif pilihan == "12":
                 simpan_semua_data()
                 posisi = main_menu()
                 if posisi is None:
@@ -1091,7 +1166,8 @@ if posisi is not None:
             print("3. Kelola Stok Barang")
             print("4. Peringatan Stok Minimum")
             print("5. Laporan Stok dan Aktivitas Gudang")
-            print("6. Log Out Akun")
+            print("6. Urutkan Data Barang")
+            print("7. Log Out Akun")
             print("0. Keluar")
 
             pilihan = input("Pilih Menu: ").strip()
@@ -1107,6 +1183,8 @@ if posisi is not None:
             elif pilihan == "5":
                 laporan_gudang()
             elif pilihan == "6":
+                sorting_barang()
+            elif pilihan == "7":
                 simpan_semua_data()
                 posisi = main_menu()
                 if posisi is None:
