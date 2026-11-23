@@ -156,15 +156,20 @@ def muat_transaksi():
                             "harga_beli": int(data[5])
                         })
                     elif len(data) == 5:
+                        # Transaksi versi lama belum menyimpan harga beli.
+                        # Gunakan harga beli dari barang.txt sebagai estimasi.
                         jumlah = int(data[3])
                         total = int(data[4])
+                        barang = data_barang.get(data[2])
+                        harga_beli = barang["harga_beli"] if barang else 0
                         transaksi.append({
                             "waktu": data[0],
                             "nama": data[1],
                             "kode": data[2],
                             "jumlah": jumlah,
                             "total": total,
-                            "harga_beli": total // jumlah if jumlah > 0 else 0
+                            "harga_beli": harga_beli,
+                            "modal_estimasi": True
                         })
                 except ValueError:
                     pass
@@ -201,13 +206,17 @@ def muat_barang_masuk():
 
 
 def simpan_barang_keluar():
+    # Format baru: waktu|nama|kode|jumlah|alasan|harga_beli.
+    # Baris lama dengan 4 kolom tetap dapat dibaca oleh muat_barang_keluar().
     with open("barang_keluar.txt", "w", encoding="utf-8") as file:
         for data in barang_keluar:
             file.write(
+                str(data.get("waktu", "")) + "|" +
                 data["nama"] + "|" +
                 data["kode"] + "|" +
                 str(data["jumlah"]) + "|" +
-                str(data["alasan"]) + "\n"
+                str(data["alasan"]) + "|" +
+                str(data.get("harga_beli", "")) + "\n"
             )
 
 
@@ -216,16 +225,28 @@ def muat_barang_keluar():
         with open("barang_keluar.txt", "r", encoding="utf-8") as file:
             for baris in file:
                 data = baris.strip().split("|")
-                if len(data) == 4:
-                    try:
+                try:
+                    if len(data) == 6:
                         barang_keluar.append({
+                            "waktu": data[0],
+                            "nama": data[1],
+                            "kode": data[2],
+                            "jumlah": int(data[3]),
+                            "alasan": data[4],
+                            "harga_beli": int(data[5]) if data[5] else None
+                        })
+                    elif len(data) == 4:
+                        # Format lama tidak memiliki tanggal dan harga beli.
+                        barang_keluar.append({
+                            "waktu": None,
                             "nama": data[0],
                             "kode": data[1],
                             "jumlah": int(data[2]),
-                            "alasan": data[3]
+                            "alasan": data[3],
+                            "harga_beli": None
                         })
-                    except ValueError:
-                        pass
+                except ValueError:
+                    pass
     except FileNotFoundError:
         pass
 
@@ -946,19 +967,26 @@ def kelola_stok():
             print("Stok tidak mencukupi.")
             return
 
+        print("Contoh alasan: rusak, kedaluwarsa, retur, atau kebutuhan operasional.")
         alasan = bersihkan(input("Alasan barang keluar: "))
         if alasan == "":
             alasan = "-"
+
         barang["stok"] -= jumlah
         barang_keluar.append({
+            "waktu": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "nama": barang["nama"],
             "kode": barang["kode"],
             "jumlah": jumlah,
-            "alasan": alasan
+            "alasan": alasan,
+            "harga_beli": barang["harga_beli"]
         })
         simpan_barang()
         simpan_barang_keluar()
-        print("Barang keluar berhasil dicatat.")
+        if "rusak" in alasan.lower():
+            print("Barang rusak berhasil dicatat sebagai kerugian pada laporan laba/rugi.")
+        else:
+            print("Barang keluar berhasil dicatat. Alasan ini tidak dihitung sebagai kerugian barang rusak.")
 
     print("Stok sekarang:", barang["stok"])
 
@@ -1065,8 +1093,8 @@ def laporan_penjualan():
 # ==========================================
 def laporan_laba_rugi():
     print("\n=== LAPORAN LABA/RUGI BERDASARKAN RANGE TANGGAL ===")
-    if len(transaksi) == 0:
-        print("Belum ada transaksi.")
+    if not transaksi and not barang_keluar:
+        print("Belum ada transaksi penjualan atau barang keluar.")
         return
 
     try:
@@ -1084,38 +1112,92 @@ def laporan_laba_rugi():
         print("Tanggal awal tidak boleh melewati tanggal akhir.")
         return
 
-    total_pendapatan = 0
-    total_modal = 0
-    jumlah_transaksi = 0
-
+    transaksi_filter = []
     for data in transaksi:
         try:
-            tanggal_transaksi = datetime.strptime(
-                data["waktu"], "%Y-%m-%d %H:%M:%S"
-            ).date()
-        except ValueError:
+            tanggal = datetime.strptime(data["waktu"], "%Y-%m-%d %H:%M:%S").date()
+        except (ValueError, KeyError, TypeError):
             continue
-        if tanggal_awal <= tanggal_transaksi <= tanggal_akhir:
-            total_pendapatan += data["total"]
-            total_modal += data["harga_beli"] * data["jumlah"]
-            jumlah_transaksi += 1
+        if tanggal_awal <= tanggal <= tanggal_akhir:
+            transaksi_filter.append(data)
 
-    if jumlah_transaksi == 0:
-        print("Tidak ada transaksi pada rentang tanggal tersebut.")
+    barang_rusak_filter = []
+    barang_keluar_lama_tanpa_tanggal = 0
+    for data in barang_keluar:
+        if "rusak" not in str(data.get("alasan", "")).lower():
+            continue
+        if not data.get("waktu"):
+            barang_keluar_lama_tanpa_tanggal += 1
+            continue
+        try:
+            tanggal = datetime.strptime(data["waktu"], "%Y-%m-%d %H:%M:%S").date()
+        except (ValueError, TypeError):
+            barang_keluar_lama_tanpa_tanggal += 1
+            continue
+        if tanggal_awal <= tanggal <= tanggal_akhir:
+            barang_rusak_filter.append(data)
+
+    if not transaksi_filter and not barang_rusak_filter:
+        print("Tidak ada transaksi atau barang rusak pada rentang tanggal tersebut.")
+        if barang_keluar_lama_tanpa_tanggal:
+            print(f"Catatan: {barang_keluar_lama_tanpa_tanggal} catatan barang rusak lama tidak memiliki tanggal sehingga tidak dapat dimasukkan ke periode tertentu.")
         return
 
-    laba = total_pendapatan - total_modal
+    total_pendapatan = 0
+    total_modal_terjual = 0
+    jumlah_item = 0
+    transaksi_estimasi = 0
+    for data in transaksi_filter:
+        jumlah = data.get("jumlah", 0)
+        pendapatan = data.get("total", 0)
+        harga_beli = data.get("harga_beli")
+        if data.get("modal_estimasi"):
+            transaksi_estimasi += 1
+        if jumlah <= 0 or pendapatan < 0 or harga_beli is None or harga_beli < 0:
+            print("Peringatan: data transaksi " + str(data.get("kode", "-")) + " tidak valid dan dilewati.")
+            continue
+        total_pendapatan += pendapatan
+        total_modal_terjual += harga_beli * jumlah
+        jumlah_item += 1
+
+    total_kerugian_rusak = 0
+    jumlah_barang_rusak = 0
+    catatan_rusak_tanpa_modal = 0
+    for data in barang_rusak_filter:
+        jumlah = data.get("jumlah", 0)
+        harga_beli = data.get("harga_beli")
+        # Untuk catatan versi lama tanpa harga beli, gunakan harga beli barang saat ini sebagai estimasi.
+        if harga_beli is None and data.get("kode") in data_barang:
+            harga_beli = data_barang[data["kode"]].get("harga_beli")
+        if jumlah <= 0 or harga_beli is None or harga_beli < 0:
+            catatan_rusak_tanpa_modal += 1
+            continue
+        total_kerugian_rusak += harga_beli * jumlah
+        jumlah_barang_rusak += jumlah
+
+    laba = total_pendapatan - total_modal_terjual - total_kerugian_rusak
 
     print(f"\nPeriode: {tanggal_awal} s/d {tanggal_akhir}")
-    print("-" * 34)
-    print(f"Jumlah transaksi    : {jumlah_transaksi}")
-    print(f"Total Pendapatan    : {rupiah(total_pendapatan)}")
-    print(f"Total Modal         : {rupiah(total_modal)}")
-    print("-" * 34)
-    if laba >= 0:
-        print(f"LABA                : {rupiah(laba)}")
+    print("-" * 48)
+    print(f"Jumlah item penjualan : {jumlah_item}")
+    print(f"Total Pendapatan      : {rupiah(total_pendapatan)}")
+    print(f"Modal barang terjual  : {rupiah(total_modal_terjual)}")
+    print(f"Jumlah barang rusak   : {jumlah_barang_rusak}")
+    print(f"Kerugian barang rusak : {rupiah(total_kerugian_rusak)}")
+    print("-" * 48)
+    if laba > 0:
+        print(f"LABA                  : {rupiah(laba)}")
+    elif laba < 0:
+        print(f"RUGI                  : {rupiah(abs(laba))}")
     else:
-        print(f"RUGI                : {rupiah(abs(laba))}")
+        print("IMPAS                 : Rp0")
+
+    if transaksi_estimasi:
+        print(f"Catatan: {transaksi_estimasi} item transaksi lama menggunakan estimasi harga beli dari barang.txt.")
+    if barang_keluar_lama_tanpa_tanggal:
+        print(f"Catatan: {barang_keluar_lama_tanpa_tanggal} catatan barang rusak lama tidak memiliki tanggal, sehingga tidak dimasukkan ke periode ini.")
+    if catatan_rusak_tanpa_modal:
+        print(f"Peringatan: {catatan_rusak_tanpa_modal} catatan barang rusak tidak memiliki data modal dan dilewati.")
 
 
 # ==========================================
