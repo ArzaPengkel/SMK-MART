@@ -1,200 +1,200 @@
-B001|Pensil|3000|5|aktif
-B002|Buku|3000|10|aktif
-B003|Telur|3000|15|aktif
-B004|Susu|7000|15|aktif
-B005|Tolak Angin|4000|15|aktif
-B006|Penghapus|2500|15|aktif
-B007|Lem Kertas|4000|15|aktif
-B008|Pulpen|3000|20|aktif
-B009|Penggaris|6000|20|aktif
-B010|Spidol Whiteboard|8000|25|aktif
-B011|Spidol Permanen|7500|20|aktif
-B012|Stabilo|6000|18|aktif
-B013|Pensil Warna 12|15000|12|aktif
-B014|Crayon 12|12000|10|aktif
-B015|Rautan Pensil|2000|30|aktif
-B016|Tipe-X Cair|5000|22|aktif
-B017|Tipe-X Kertas|6000|15|aktif
-B018|Stapler|12000|10|aktif
-B019|Isi Staples|3000|40|aktif
-B020|Gunting|7000|15|aktif
-B021|Cutter|5000|18|aktif
-B022|Lakban Bening|6000|25|aktif
-B023|Lakban Hitam|7000|15|aktif
-B024|Double Tape|4500|25|aktif
-B025|Klip Kertas|3000|35|aktif
-B026|Paper Clip Besar|3500|20|aktif
-B027|Map Plastik|2000|50|aktif
-B028|Map Snelhecter|4500|30|aktif
-B029|Amplop Putih|1000|100|aktif
-B030|Amplop Coklat|1500|80|aktif
-B031|Kertas HVS A4|55000|20|aktif
-B032|Kertas HVS F4|58000|15|aktif
-B033|Kertas Folio Bergaris|1500|60|aktif
-B034|Buku Tulis 38 Lembar|4000|60|aktif
-B035|Buku Tulis 58 Lembar|6000|50|aktif
-B036|Buku Gambar A4|7000|25|aktif
-B037|Buku Gambar A3|12000|12|aktif
-B038|Buku Agenda|18000|10|aktif
-B039|Buku Folio 100 Lembar|15000|20|aktif
-B040|Sticky Notes|5000|30|aktif
-B041|Penggaris Besi|8000|15|aktif
-B042|Jangka|10000|12|aktif
-B043|Busur Derajat|4000|20|aktif
-B044|Kalkulator Scientific|95000|8|aktif
-B045|Kalkulator Biasa|35000|10|aktif
-B046|Tas Sekolah|120000|6|aktif
-B047|Kotak Pensil|15000|18|aktif
-B048|Botol Minum|25000|14|aktif
-B049|Kotak Makan|20000|14|aktif
-B050|Air Mineral 600ml|3000|120|aktif
-B051|Air Mineral 1500ml|6000|60|aktif
-B052|Teh Botol|5000|48|aktif
-B053|Teh Kotak|4500|48|aktif
-B054|Teh Gelas|1500|90|aktif
-B055|Kopi Sachet|2000|100|aktif
-B056|Susu Coklat|6000|36|aktif
-B057|Susu Kotak|5500|36|aktif
-B058|Jus Jeruk|7000|24|aktif
-B059|Minuman Isotonik|7500|30|aktif
-B060|Roti Tawar|15000|12|aktif
-B061|Roti Coklat|4000|30|aktif
-B062|Roti Keju|4500|30|aktif
-B063|Biskuit Coklat|6000|40|aktif
-B064|Biskuit Kelapa|5500|40|aktif
-B065|Wafer Coklat|2500|60|aktif
-B066|Keripik Kentang|9000|25|aktif
-B067|Keripik Singkong|8000|25|aktif
-B068|Kacang Atom|7000|20|aktif
-B069|Permen Mint|1000|150|aktif
-B070|Permen Karet|500|200|aktif
-B071|Coklat Batang|8500|30|aktif
-B072|Mie Instan Goreng|3500|100|aktif
-B073|Mie Instan Soto|3200|100|aktif
-B074|Mie Instan Ayam Bawang|3200|100|aktif
-B075|Bubur Instan|3500|30|aktif
-B076|Sarden Kaleng|12000|20|aktif
-B077|Kornet Kaleng|18000|12|aktif
-B078|Beras 5kg|68000|15|aktif
-B079|Gula Pasir 1kg|17000|20|aktif
-B080|Minyak Goreng 1L|18000|20|aktif
-B081|Tepung Terigu 1kg|13000|18|aktif
-B082|Garam Dapur|3000|40|aktif
-B083|Kecap Manis|9000|25|aktif
-B084|Saus Sambal|8000|25|aktif
-B085|Saus Tomat|8500|25|aktif
-B086|Teh Celup|7000|30|aktif
-B087|Kopi Bubuk|12000|20|aktif
-B088|Susu Kental Manis|11000|24|aktif
-B089|Sabun Mandi|4500|40|aktif
-B090|Sabun Cuci Tangan|12000|20|aktif
-B091|Sampo Sachet|1000|120|aktif
-B092|Pasta Gigi|9000|30|aktif
-B093|Sikat Gigi|6000|30|aktif
-B094|Tisu Wajah|8000|35|aktif
-B095|Tisu Gulung|4000|40|aktif
-B096|Masker|10000|25|aktif
-B097|Hand Sanitizer|9000|25|aktif
-B098|Deterjen Sachet|1500|80|aktif
-B099|Pewangi Pakaian|2000|60|aktif
-B100|Pembersih Lantai|12000|15|aktif
-B101|Sapu Lidi|15000|8|aktif
-B102|Kantong Plastik|5000|50|aktif
-B103|Baterai AA|8000|30|aktif
-B104|Baterai AAA|8000|30|aktif
-B105|Senter|20000|10|aktif
-B106|Charger HP|35000|8|aktif
-B107|Headset|25000|10|aktif
-B108|Flashdisk 16GB|60000|10|aktif
-B109|Pensil 2B|3500|40|aktif
-B110|Pensil Mekanik|6000|25|aktif
-B111|Isi Pensil Mekanik|3000|40|aktif
-B112|Pulpen Gel|4000|35|aktif
-B113|Pulpen Biru|2500|60|aktif
-B114|Pulpen Merah|2500|50|aktif
-B115|Pena Tinta|12000|10|aktif
-B116|Penghapus Pensil Warna|3000|30|aktif
-B117|Penghapus Papan Tulis|5000|12|aktif
-B118|Kapur Tulis|6000|20|aktif
-B119|Papan Jalan|9000|15|aktif
-B120|Buku Binder|22000|10|aktif
-B121|Kertas Binder|8000|25|aktif
-B122|Kertas Warna|10000|20|aktif
-B123|Kertas Origami|6000|25|aktif
-B124|Kertas Karton|3000|40|aktif
-B125|Kertas Manila|2500|40|aktif
-B126|Kertas Kado|2000|50|aktif
-B127|Pita Kado|3000|30|aktif
-B128|Lem Stik|5000|30|aktif
-B129|Lem Cair|3500|35|aktif
-B130|Lem Tembak|18000|8|aktif
-B131|Kertas Label|7000|20|aktif
-B132|Penjepit Kertas Besar|4000|25|aktif
-B133|Penjepit Kertas Kecil|3000|30|aktif
-B134|Paku Payung|2500|30|aktif
-B135|Bantalan Stempel|12000|10|aktif
-B136|Tinta Stempel|9000|12|aktif
-B137|Penggaris Segitiga|7000|15|aktif
-B138|Penggaris 30cm|3500|40|aktif
-B139|Penggaris Lipat|5000|20|aktif
-B140|Kompas Pelajar|12000|8|aktif
-B141|Map Kancing|3000|40|aktif
-B142|Map Bening|2500|50|aktif
-B143|Ordner|25000|12|aktif
-B144|Clipboard|10000|15|aktif
-B145|Buku Mewarnai|6000|25|aktif
-B146|Buku Cerita Anak|15000|12|aktif
-B147|Kamus Bahasa Inggris|45000|6|aktif
-B148|Atlas Dunia|35000|6|aktif
-B149|Celengan|10000|15|aktif
-B150|Topi Sekolah|25000|10|aktif
-B151|Dasi Sekolah|15000|10|aktif
-B152|Kaos Kaki Sekolah|12000|20|aktif
-B153|Ikat Pinggang|30000|10|aktif
-B154|Jas Hujan Plastik|8000|25|aktif
-B155|Payung Lipat|40000|8|aktif
-B156|Sandal Jepit|18000|15|aktif
-B157|Handuk Kecil|12000|15|aktif
-B158|Sapu Tangan|5000|25|aktif
-B159|Pita Rambut|3000|40|aktif
-B160|Jepit Rambut|2500|50|aktif
-B161|Sisir|4000|30|aktif
-B162|Cermin Kecil|6000|15|aktif
-B163|Kuku Gunting|7000|15|aktif
-B164|Cotton Bud|4000|40|aktif
-B165|Plester Luka|5000|30|aktif
-B166|Minyak Kayu Putih|12000|20|aktif
-B167|Balsem|8000|25|aktif
-B168|Obat Sakit Kepala|5000|30|aktif
-B169|Antiseptik Cair|9000|15|aktif
-B170|Kapas|6000|20|aktif
-B171|Vitamin C|12000|20|aktif
-B172|Permen Jahe|3000|50|aktif
-B173|Teh Hijau|9000|20|aktif
-B174|Susu Strawberry|6000|30|aktif
-B175|Susu Vanilla|6000|30|aktif
-B176|Yoghurt Cup|5000|24|aktif
-B177|Es Krim Cup|6000|20|aktif
-B178|Agar-agar Cup|3000|40|aktif
-B179|Puding Coklat|3500|30|aktif
-B180|Jelly Drink|3000|40|aktif
-B181|Roti Sobek|13000|10|aktif
-B182|Roti Pisang|4500|25|aktif
-B183|Donat|3500|30|aktif
-B184|Bolu Kukus|3000|30|aktif
-B185|Lontong Isi|3000|20|aktif
-B186|Pisang Goreng|2000|30|aktif
-B187|Gorengan Tempe|1000|60|aktif
-B188|Nasi Bungkus|10000|20|aktif
-B189|Nasi Goreng Bungkus|12000|15|aktif
-B190|Mie Goreng Bungkus|10000|15|aktif
-B191|Soto Ayam Bungkus|13000|10|aktif
-B192|Telur Asin|4000|20|aktif
-B193|Telur Puyuh|1500|60|aktif
-B194|Abon Sapi|15000|10|aktif
-B195|Selai Coklat|14000|12|aktif
-B196|Selai Strawberry|13000|12|aktif
-B197|Madu Sachet|3000|30|aktif
-B198|Sirup Marjan|22000|10|aktif
-B199|Sereal Sarapan|18000|10|aktif
-B200|Oatmeal Instan|3000|40|aktif
+B001|Pensil|2000|3000|5|aktif
+B002|Buku|2000|3000|10|aktif
+B003|Telur|2000|3000|15|aktif
+B004|Susu|6000|7000|15|aktif
+B005|Tolak Angin|3000|4000|15|aktif
+B006|Penghapus|2000|2500|15|aktif
+B007|Lem Kertas|3000|4000|15|aktif
+B008|Pulpen|2000|3000|20|aktif
+B009|Penggaris|5000|6000|20|aktif
+B010|Spidol Whiteboard|7000|8000|25|aktif
+B011|Spidol Permanen|6000|7500|20|aktif
+B012|Stabilo|5000|6000|18|aktif
+B013|Pensil Warna 12|13000|15000|12|aktif
+B014|Crayon 12|10000|12000|10|aktif
+B015|Rautan Pensil|1000|2000|30|aktif
+B016|Tipe-X Cair|4000|5000|22|aktif
+B017|Tipe-X Kertas|5000|6000|15|aktif
+B018|Stapler|10000|12000|10|aktif
+B019|Isi Staples|2000|3000|40|aktif
+B020|Gunting|6000|7000|15|aktif
+B021|Cutter|4000|5000|18|aktif
+B022|Lakban Bening|5000|6000|25|aktif
+B023|Lakban Hitam|6000|7000|15|aktif
+B024|Double Tape|4000|4500|25|aktif
+B025|Klip Kertas|2000|3000|35|aktif
+B026|Paper Clip Besar|3000|3500|20|aktif
+B027|Map Plastik|1000|2000|50|aktif
+B028|Map Snelhecter|4000|4500|30|aktif
+B029|Amplop Putih|1000|1000|100|aktif
+B030|Amplop Coklat|1000|1500|80|aktif
+B031|Kertas HVS A4|47000|55000|20|aktif
+B032|Kertas HVS F4|49000|58000|15|aktif
+B033|Kertas Folio Bergaris|1000|1500|60|aktif
+B034|Buku Tulis 38 Lembar|3000|4000|60|aktif
+B035|Buku Tulis 58 Lembar|5000|6000|50|aktif
+B036|Buku Gambar A4|6000|7000|25|aktif
+B037|Buku Gambar A3|10000|12000|12|aktif
+B038|Buku Agenda|15000|18000|10|aktif
+B039|Buku Folio 100 Lembar|13000|15000|20|aktif
+B040|Sticky Notes|4000|5000|30|aktif
+B041|Penggaris Besi|7000|8000|15|aktif
+B042|Jangka|8000|10000|12|aktif
+B043|Busur Derajat|3000|4000|20|aktif
+B044|Kalkulator Scientific|81000|95000|8|aktif
+B045|Kalkulator Biasa|30000|35000|10|aktif
+B046|Tas Sekolah|102000|120000|6|aktif
+B047|Kotak Pensil|13000|15000|18|aktif
+B048|Botol Minum|21000|25000|14|aktif
+B049|Kotak Makan|17000|20000|14|aktif
+B050|Air Mineral 600ml|2000|3000|120|aktif
+B051|Air Mineral 1500ml|5000|6000|60|aktif
+B052|Teh Botol|4000|5000|48|aktif
+B053|Teh Kotak|4000|4500|48|aktif
+B054|Teh Gelas|1000|1500|90|aktif
+B055|Kopi Sachet|1000|2000|100|aktif
+B056|Susu Coklat|5000|6000|36|aktif
+B057|Susu Kotak|5000|5500|36|aktif
+B058|Jus Jeruk|6000|7000|24|aktif
+B059|Minuman Isotonik|6000|7500|30|aktif
+B060|Roti Tawar|13000|15000|12|aktif
+B061|Roti Coklat|3000|4000|30|aktif
+B062|Roti Keju|4000|4500|30|aktif
+B063|Biskuit Coklat|5000|6000|40|aktif
+B064|Biskuit Kelapa|5000|5500|40|aktif
+B065|Wafer Coklat|2000|2500|60|aktif
+B066|Keripik Kentang|8000|9000|25|aktif
+B067|Keripik Singkong|7000|8000|25|aktif
+B068|Kacang Atom|6000|7000|20|aktif
+B069|Permen Mint|1000|1000|150|aktif
+B070|Permen Karet|500|500|200|aktif
+B071|Coklat Batang|7000|8500|30|aktif
+B072|Mie Instan Goreng|3000|3500|100|aktif
+B073|Mie Instan Soto|3000|3200|100|aktif
+B074|Mie Instan Ayam Bawang|3000|3200|100|aktif
+B075|Bubur Instan|3000|3500|30|aktif
+B076|Sarden Kaleng|10000|12000|20|aktif
+B077|Kornet Kaleng|15000|18000|12|aktif
+B078|Beras 5kg|58000|68000|15|aktif
+B079|Gula Pasir 1kg|14000|17000|20|aktif
+B080|Minyak Goreng 1L|15000|18000|20|aktif
+B081|Tepung Terigu 1kg|11000|13000|18|aktif
+B082|Garam Dapur|2000|3000|40|aktif
+B083|Kecap Manis|8000|9000|25|aktif
+B084|Saus Sambal|7000|8000|25|aktif
+B085|Saus Tomat|7000|8500|25|aktif
+B086|Teh Celup|6000|7000|30|aktif
+B087|Kopi Bubuk|10000|12000|20|aktif
+B088|Susu Kental Manis|9000|11000|24|aktif
+B089|Sabun Mandi|4000|4500|40|aktif
+B090|Sabun Cuci Tangan|10000|12000|20|aktif
+B091|Sampo Sachet|1000|1000|120|aktif
+B092|Pasta Gigi|8000|9000|30|aktif
+B093|Sikat Gigi|5000|6000|30|aktif
+B094|Tisu Wajah|7000|8000|35|aktif
+B095|Tisu Gulung|3000|4000|40|aktif
+B096|Masker|8000|10000|25|aktif
+B097|Hand Sanitizer|8000|9000|25|aktif
+B098|Deterjen Sachet|1000|1500|80|aktif
+B099|Pewangi Pakaian|1000|2000|60|aktif
+B100|Pembersih Lantai|10000|12000|15|aktif
+B101|Sapu Lidi|13000|15000|8|aktif
+B102|Kantong Plastik|4000|5000|50|aktif
+B103|Baterai AA|7000|8000|30|aktif
+B104|Baterai AAA|7000|8000|30|aktif
+B105|Senter|17000|20000|10|aktif
+B106|Charger HP|30000|35000|8|aktif
+B107|Headset|21000|25000|10|aktif
+B108|Flashdisk 16GB|51000|60000|10|aktif
+B109|Pensil 2B|3000|3500|40|aktif
+B110|Pensil Mekanik|5000|6000|25|aktif
+B111|Isi Pensil Mekanik|2000|3000|40|aktif
+B112|Pulpen Gel|3000|4000|35|aktif
+B113|Pulpen Biru|2000|2500|60|aktif
+B114|Pulpen Merah|2000|2500|50|aktif
+B115|Pena Tinta|10000|12000|10|aktif
+B116|Penghapus Pensil Warna|2000|3000|30|aktif
+B117|Penghapus Papan Tulis|4000|5000|12|aktif
+B118|Kapur Tulis|5000|6000|20|aktif
+B119|Papan Jalan|8000|9000|15|aktif
+B120|Buku Binder|19000|22000|10|aktif
+B121|Kertas Binder|7000|8000|25|aktif
+B122|Kertas Warna|8000|10000|20|aktif
+B123|Kertas Origami|5000|6000|25|aktif
+B124|Kertas Karton|2000|3000|40|aktif
+B125|Kertas Manila|2000|2500|40|aktif
+B126|Kertas Kado|1000|2000|50|aktif
+B127|Pita Kado|2000|3000|30|aktif
+B128|Lem Stik|4000|5000|30|aktif
+B129|Lem Cair|3000|3500|35|aktif
+B130|Lem Tembak|15000|18000|8|aktif
+B131|Kertas Label|6000|7000|20|aktif
+B132|Penjepit Kertas Besar|3000|4000|25|aktif
+B133|Penjepit Kertas Kecil|2000|3000|30|aktif
+B134|Paku Payung|2000|2500|30|aktif
+B135|Bantalan Stempel|10000|12000|10|aktif
+B136|Tinta Stempel|8000|9000|12|aktif
+B137|Penggaris Segitiga|6000|7000|15|aktif
+B138|Penggaris 30cm|3000|3500|40|aktif
+B139|Penggaris Lipat|4000|5000|20|aktif
+B140|Kompas Pelajar|10000|12000|8|aktif
+B141|Map Kancing|2000|3000|40|aktif
+B142|Map Bening|2000|2500|50|aktif
+B143|Ordner|21000|25000|12|aktif
+B144|Clipboard|8000|10000|15|aktif
+B145|Buku Mewarnai|5000|6000|25|aktif
+B146|Buku Cerita Anak|13000|15000|12|aktif
+B147|Kamus Bahasa Inggris|38000|45000|6|aktif
+B148|Atlas Dunia|30000|35000|6|aktif
+B149|Celengan|8000|10000|15|aktif
+B150|Topi Sekolah|21000|25000|10|aktif
+B151|Dasi Sekolah|13000|15000|10|aktif
+B152|Kaos Kaki Sekolah|10000|12000|20|aktif
+B153|Ikat Pinggang|26000|30000|10|aktif
+B154|Jas Hujan Plastik|7000|8000|25|aktif
+B155|Payung Lipat|34000|40000|8|aktif
+B156|Sandal Jepit|15000|18000|15|aktif
+B157|Handuk Kecil|10000|12000|15|aktif
+B158|Sapu Tangan|4000|5000|25|aktif
+B159|Pita Rambut|2000|3000|40|aktif
+B160|Jepit Rambut|2000|2500|50|aktif
+B161|Sisir|3000|4000|30|aktif
+B162|Cermin Kecil|5000|6000|15|aktif
+B163|Kuku Gunting|6000|7000|15|aktif
+B164|Cotton Bud|3000|4000|40|aktif
+B165|Plester Luka|4000|5000|30|aktif
+B166|Minyak Kayu Putih|10000|12000|20|aktif
+B167|Balsem|7000|8000|25|aktif
+B168|Obat Sakit Kepala|4000|5000|30|aktif
+B169|Antiseptik Cair|8000|9000|15|aktif
+B170|Kapas|5000|6000|20|aktif
+B171|Vitamin C|10000|12000|20|aktif
+B172|Permen Jahe|2000|3000|50|aktif
+B173|Teh Hijau|8000|9000|20|aktif
+B174|Susu Strawberry|5000|6000|30|aktif
+B175|Susu Vanilla|5000|6000|30|aktif
+B176|Yoghurt Cup|4000|5000|24|aktif
+B177|Es Krim Cup|5000|6000|20|aktif
+B178|Agar-agar Cup|2000|3000|40|aktif
+B179|Puding Coklat|3000|3500|30|aktif
+B180|Jelly Drink|2000|3000|40|aktif
+B181|Roti Sobek|11000|13000|10|aktif
+B182|Roti Pisang|4000|4500|25|aktif
+B183|Donat|3000|3500|30|aktif
+B184|Bolu Kukus|2000|3000|30|aktif
+B185|Lontong Isi|2000|3000|20|aktif
+B186|Pisang Goreng|1000|2000|30|aktif
+B187|Gorengan Tempe|1000|1000|60|aktif
+B188|Nasi Bungkus|8000|10000|20|aktif
+B189|Nasi Goreng Bungkus|10000|12000|15|aktif
+B190|Mie Goreng Bungkus|8000|10000|15|aktif
+B191|Soto Ayam Bungkus|11000|13000|10|aktif
+B192|Telur Asin|3000|4000|20|aktif
+B193|Telur Puyuh|1000|1500|60|aktif
+B194|Abon Sapi|13000|15000|10|aktif
+B195|Selai Coklat|12000|14000|12|aktif
+B196|Selai Strawberry|11000|13000|12|aktif
+B197|Madu Sachet|2000|3000|30|aktif
+B198|Sirup Marjan|19000|22000|10|aktif
+B199|Sereal Sarapan|15000|18000|10|aktif
+B200|Oatmeal Instan|2000|3000|40|aktif
