@@ -299,6 +299,62 @@ muat_barang_keluar()
 def barang_aktif(barang):
     return barang.get("status", "aktif") == "aktif"
 
+def pilih_barang(prompt, status=None):
+    """Cari barang (kode/nama/sebagian nama), kembalikan SATU barang.
+    status: None = semua, 'aktif' = hanya aktif, 'nonaktif' = hanya nonaktif.
+    Return None jika batal / tidak ditemukan.
+    """
+    while True:
+        kata = input(prompt).strip().lower()
+        if kata == "0":
+            return None
+        if kata == "":
+            print("Kata kunci tidak boleh kosong.")
+            continue
+
+        kandidat = []
+        for b in data_barang.values():
+            if status == "aktif" and not barang_aktif(b):
+                continue
+            if status == "nonaktif" and barang_aktif(b):
+                continue
+            kandidat.append(b)
+
+        # jalur cepat: kode persis -> langsung pakai, tanpa tanya lagi
+        for b in kandidat:
+            if b["kode"].lower() == kata:
+                return b
+
+        kunci = kata.split()
+        hasil = [b for b in kandidat
+                 if all(k in (b["kode"] + " " + b["nama"]).lower() for k in kunci)]
+
+        if not hasil:
+            print(f"Tidak ada barang yang cocok dengan '{kata}'.")
+            ulang = input("Cari lagi? (y/t): ").lower().strip()
+            if ulang != "y":
+                return None
+            continue
+
+        hasil.sort(key=lambda b: b["kode"])
+
+        if len(hasil) == 1:
+            return hasil[0]
+
+        print(f"\nDitemukan {len(hasil)} barang untuk '{kata}':")
+        cetak_tabel_barang(hasil, tampil_status=True)
+        pilih = input(f"Pilih nomor (1-{len(hasil)}, 0 untuk batal): ").strip()
+        if pilih == "0":
+            return None
+        try:
+            indeks = int(pilih) - 1
+        except ValueError:
+            print("Pilihan harus berupa angka.")
+            continue
+        if 0 <= indeks < len(hasil):
+            return hasil[indeks]
+        print("Nomor di luar jangkauan.")
+
 
 # ==========================================
 # DAFTAR AKUN
@@ -482,16 +538,8 @@ def nonaktifkan_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin dinonaktifkan (0 untuk kembali): ").strip().upper()
-    if kode == "0":
-        return
-    if kode not in data_barang:
-        print("Barang tidak ditemukan.")
-        return
-
-    barang = data_barang[kode]
-    if not barang_aktif(barang):
-        print("Barang ini sudah berstatus nonaktif.")
+    barang = pilih_barang("\nCari barang yang ingin dinonaktifkan (kode/nama, 0 untuk kembali): ", status="aktif")
+    if barang is None:
         return
 
     print("\nKode   :", barang["kode"])
@@ -523,16 +571,8 @@ def aktifkan_barang():
     print("\nDaftar Barang Nonaktif:")
     cetak_tabel_barang(sorted(barang_nonaktif, key=lambda b: b["kode"]))
 
-    kode = input("\nMasukkan Kode barang yang ingin diaktifkan kembali (0 untuk kembali): ").strip().upper()
-    if kode == "0":
-        return
-    if kode not in data_barang:
-        print("Barang tidak ditemukan.")
-        return
-
-    barang = data_barang[kode]
-    if barang_aktif(barang):
-        print("Barang ini sudah berstatus aktif.")
+    barang = pilih_barang("\nCari barang yang ingin diaktifkan (kode/nama, 0 untuk kembali): ", status="nonaktif")
+    if barang is None:
         return
 
     konfirmasi = input("Yakin ingin mengaktifkan barang ini? (y/t): ").lower().strip()
@@ -555,13 +595,10 @@ def edit_barang():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang yang ingin diedit (0 untuk kembali): ").strip().upper()
-    if kode == "0":
+    barang = pilih_barang("\nCari barang yang ingin diedit (kode/nama, 0 untuk kembali): ")
+    if barang is None:
         return
-    if kode not in data_barang:
-        print("Barang tidak ditemukan.")
-        return
-    barang = data_barang[kode]
+    kode = barang["kode"]
 
     print("\nData saat ini:")
     print("Kode       :", barang["kode"])
@@ -809,12 +846,11 @@ def transaksi_penjualan():
         tampilkan_barang()
 
         print("\n--- Tambah Barang ke Keranjang ---")
-        kode = input("Masukkan Kode barang: ").strip().upper()
+        barang = pilih_barang("Cari barang (kode/nama, 0 untuk batal): ", status="aktif")
 
-        if kode not in data_barang or not barang_aktif(data_barang[kode]):
-            print("Barang tidak ditemukan atau sudah nonaktif.")
+        if barang is None:
+            print("Barang tidak dipilih.")
         else:
-            barang = data_barang[kode]
             print(f"Barang: {barang['nama']} | Harga: {rupiah(barang['harga_jual'])} | Stok: {barang['stok']}")
             try:
                 jumlah = int(input("Jumlah beli: "))
@@ -925,14 +961,8 @@ def kelola_stok():
         return
 
     tampilkan_barang()
-    kode = input("\nKode barang: ").strip().upper()
-    if kode not in data_barang:
-        print("Barang tidak ditemukan.")
-        return
-
-    barang = data_barang[kode]
-    if not barang_aktif(barang):
-        print("Barang berstatus nonaktif. Aktifkan terlebih dahulu.")
+    barang = pilih_barang("\nCari barang (kode/nama, 0 untuk kembali): ", status="aktif")
+    if barang is None:
         return
 
     print("\nKode   :", barang["kode"])
